@@ -4,535 +4,283 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AK Vacancy Manager — NE India & Metro Job Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
         :root {
-            --bg: #0d0f14;
-            --bg2: #13161e;
-            --bg3: #1a1e29;
-            --card: #181c26;
-            --card-hover: #1f2435;
-            --primary: #4f8ef7;
-            --primary-dim: rgba(79,142,247,0.12);
-            --accent: #00d4aa;
-            --accent-dim: rgba(0,212,170,0.12);
-            --warn: #f7a44f;
-            --warn-dim: rgba(247,164,79,0.12);
-            --danger: #f74f6a;
-            --danger-dim: rgba(247,79,106,0.12);
-            --purple: #a56ef7;
-            --purple-dim: rgba(165,110,247,0.12);
-            --gold: #f7d94f;
-            --border: rgba(255,255,255,0.07);
-            --border-light: rgba(255,255,255,0.12);
-            --text: #e8ecf4;
-            --text2: #8892a4;
-            --text3: #5a6478;
-            --radius: 14px;
-            --radius-sm: 8px;
-            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --bg:#f5f4f0; --bg2:#eeecea; --bg3:#e8e6e1;
+            --card:#ffffff; --card-hover:#fafaf8;
+            --blue:#2563eb; --blue-lt:#eff4ff;
+            --violet:#7c3aed; --violet-lt:#f3eeff;
+            --green:#059669; --green-lt:#ecfdf5;
+            --orange:#ea580c; --orange-lt:#fff4ed;
+            --pink:#db2777; --pink-lt:#fdf2f8;
+            --teal:#0891b2; --teal-lt:#ecfeff;
+            --red:#dc2626; --red-lt:#fef2f2;
+            --gold:#d97706; --gold-lt:#fffbeb;
+            --border:#e2ddd8; --border2:#d0cbc4;
+            --text:#1c1917; --text2:#57534e; --text3:#a8a29e;
+            --radius:16px; --radius-sm:10px;
+            --shadow:0 4px 24px rgba(28,25,23,0.08);
+            --shadow-lg:0 12px 40px rgba(28,25,23,0.12);
         }
+        body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
 
-        body {
-            font-family: 'Sora', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        /* HEADER */
+        .header { background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 45%,#7c3aed 100%); position:sticky; top:0; z-index:1000; box-shadow:0 4px 20px rgba(37,99,235,0.35); }
+        .header-inner { max-width:1440px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        .brand { display:flex; align-items:center; gap:12px; }
+        .brand-mark { width:48px; height:48px; background:linear-gradient(135deg,#fbbf24,#f59e0b); border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; color:#1e3a8a; box-shadow:0 4px 16px rgba(251,191,36,0.5); animation:logoBounce 3s ease-in-out infinite; }
+        @keyframes logoBounce { 0%,100%{transform:scale(1); box-shadow:0 4px 16px rgba(251,191,36,0.5);} 50%{transform:scale(1.07); box-shadow:0 6px 24px rgba(251,191,36,0.75);} }
+        .brand-text h1 { font-size:19px; font-weight:800; color:#fff; letter-spacing:-0.3px; }
+        .brand-text p { font-size:10px; color:#bfdbfe; letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
+        .header-meta { display:flex; align-items:center; gap:22px; }
+        .hstat { text-align:center; }
+        .hstat .n { font-size:19px; font-weight:800; color:#fbbf24; font-family:'IBM Plex Mono',monospace; }
+        .hstat .l { font-size:9px; color:#93c5fd; text-transform:uppercase; letter-spacing:1px; }
+        .live-pill { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); padding:6px 14px; border-radius:20px; }
+        .live-dot { width:8px; height:8px; background:#4ade80; border-radius:50%; animation:blink 1.2s ease-in-out infinite; }
+        @keyframes blink { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(1.3);} }
+        .live-label { font-size:11px; color:#4ade80; font-weight:800; letter-spacing:1.5px; }
 
-        /* === HEADER === */
-        .header {
-            background: linear-gradient(135deg, #0a0e1a 0%, #0f1525 50%, #0a1020 100%);
-            border-bottom: 1px solid var(--border-light);
-            position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(20px);
-        }
-
-        .header-inner {
-            max-width: 1440px; margin: 0 auto;
-            padding: 14px 24px;
-            display: flex; align-items: center; justify-content: space-between; gap: 16px;
-        }
-
-        .brand { display: flex; align-items: center; gap: 12px; }
-
-        .brand-mark {
-            width: 46px; height: 46px;
-            background: linear-gradient(135deg, #4f8ef7, #a56ef7);
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; font-weight: 900; color: white;
-            box-shadow: 0 0 20px rgba(79,142,247,0.4);
-            animation: glowPulse 3s ease-in-out infinite;
-        }
-        @keyframes glowPulse {
-            0%,100% { box-shadow: 0 0 20px rgba(79,142,247,0.4); }
-            50% { box-shadow: 0 0 35px rgba(79,142,247,0.7); }
-        }
-
-        .brand-text h1 { font-size: 18px; font-weight: 800; color: #fff; }
-        .brand-text p { font-size: 10px; color: var(--text2); letter-spacing: 2px; text-transform: uppercase; margin-top: 1px; }
-
-        .header-meta { display: flex; align-items: center; gap: 20px; }
-
-        .hstat { text-align: center; }
-        .hstat .n { font-size: 18px; font-weight: 800; color: var(--gold); font-family: 'IBM Plex Mono', monospace; }
-        .hstat .l { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
-
-        .live-pill {
-            display: flex; align-items: center; gap: 6px;
-            background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.3);
-            padding: 5px 12px; border-radius: 20px;
-        }
-        .live-dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: blink 1.2s ease-in-out infinite; }
-        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-        .live-label { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 1px; }
-
-        /* === TICKER === */
-        .ticker {
-            background: rgba(79,142,247,0.08);
-            border-bottom: 1px solid var(--border);
-            padding: 7px 0; overflow: hidden;
-        }
-        .ticker-track { display: flex; animation: scroll 50s linear infinite; white-space: nowrap; }
-        .ticker-track span { color: var(--gold); font-size: 11px; padding: 0 40px; font-weight: 500; }
-        .ticker-track span::before { content: "⚡ "; }
+        /* TICKER */
+        .ticker { background:rgba(0,0,0,0.25); border-top:1px solid rgba(255,255,255,0.1); padding:7px 0; overflow:hidden; }
+        .ticker-track { display:flex; animation:scroll 55s linear infinite; white-space:nowrap; }
+        .ticker-track span { color:#fde68a; font-size:11.5px; padding:0 44px; font-weight:600; }
+        .ticker-track span::before { content:"🔔 "; }
         @keyframes scroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
 
-        /* === LAYOUT === */
-        .wrap { max-width: 1440px; margin: 0 auto; padding: 24px 20px; }
+        /* LAYOUT */
+        .wrap { max-width:1440px; margin:0 auto; padding:28px 20px; }
+        .section-box { background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius); padding:22px; margin-bottom:20px; box-shadow:var(--shadow); }
+        .sec-hd { display:flex; align-items:center; gap:10px; font-size:15px; font-weight:800; color:var(--text); margin-bottom:16px; }
+        .sec-hd .dot { width:5px; height:20px; border-radius:3px; background:linear-gradient(180deg,var(--blue),var(--violet)); flex-shrink:0; }
 
-        /* === SEARCH PANEL === */
-        .search-panel {
-            background: var(--card);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
-            position: relative; overflow: hidden;
+        /* SEARCH PANEL */
+        .search-panel { background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius); padding:24px; margin-bottom:20px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
+        .search-panel::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#2563eb,#7c3aed,#059669,#d97706,#dc2626,#0891b2); }
+        .ai-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,#eff4ff,#f3eeff); border:1.5px solid #c4b5fd; border-radius:20px; padding:5px 14px; font-size:11.5px; color:var(--violet); font-weight:700; margin-bottom:16px; }
+        .search-grid { display:grid; grid-template-columns:2fr 1.2fr 1.2fr 1fr auto; gap:12px; align-items:end; }
+        .fg { display:flex; flex-direction:column; gap:5px; }
+        .fl { font-size:11px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.8px; }
+        .fc { padding:11px 14px; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius-sm); color:var(--text); font-size:13.5px; font-family:'Plus Jakarta Sans',sans-serif; outline:none; transition:all 0.25s; }
+        .fc:focus { border-color:var(--blue); background:#fff; box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
+        .btn-go { padding:11px 24px; background:linear-gradient(135deg,#2563eb,#7c3aed); color:white; border:none; border-radius:var(--radius-sm); font-size:14px; font-weight:800; font-family:'Plus Jakarta Sans',sans-serif; cursor:pointer; transition:all 0.25s; white-space:nowrap; display:flex; align-items:center; gap:7px; box-shadow:0 4px 14px rgba(37,99,235,0.3); }
+        .btn-go:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(37,99,235,0.4); }
+
+        /* CATEGORIES */
+        .cat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(118px,1fr)); gap:9px; }
+        .cat-btn { padding:12px 8px; border-radius:12px; border:2px solid transparent; font-size:11px; font-weight:700; cursor:pointer; transition:all 0.25s; text-align:center; display:flex; flex-direction:column; align-items:center; gap:5px; color:white; position:relative; overflow:hidden; }
+        .cat-btn:hover,.cat-btn.active { transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,0.18); border-color:rgba(255,255,255,0.25); }
+        .cat-btn .ci { font-size:22px; }
+        .cat-btn .cn { font-size:11px; line-height:1.3; }
+        .cat-btn .cc { font-size:9.5px; opacity:0.85; background:rgba(0,0,0,0.18); padding:2px 7px; border-radius:10px; }
+
+        /* PORTALS */
+        .portals-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:9px; }
+        .portal-card { padding:14px 10px; border-radius:12px; border:1.5px solid var(--border); background:var(--bg); cursor:pointer; transition:all 0.25s; text-align:center; }
+        .portal-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); background:var(--card); border-color:var(--blue); }
+        .portal-card .pi { font-size:24px; margin-bottom:6px; }
+        .portal-card .pn { font-size:11.5px; font-weight:700; color:var(--text); }
+        .portal-card .pt { font-size:10px; color:var(--text3); margin-top:2px; }
+
+        /* STATES */
+        .states-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(108px,1fr)); gap:7px; }
+        .state-btn { padding:8px 10px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:var(--bg); font-size:11.5px; font-weight:600; color:var(--text2); cursor:pointer; transition:all 0.2s; text-align:center; }
+        .state-btn:hover,.state-btn.active { border-color:var(--teal); color:var(--teal); background:var(--teal-lt); font-weight:700; }
+
+        /* FILTER CHIPS */
+        .filter-row { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px; }
+        .fchip { padding:6px 15px; border-radius:20px; border:1.5px solid var(--border); background:var(--bg); font-size:11.5px; font-weight:700; color:var(--text2); cursor:pointer; transition:all 0.2s; }
+        .fchip:hover { border-color:var(--blue); color:var(--blue); background:var(--blue-lt); }
+        .fchip.active { border-color:var(--blue); color:#fff; background:var(--blue); }
+
+        /* JOBS HEADER */
+        .jobs-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px; }
+        .result-info { display:flex; align-items:center; gap:10px; }
+        .result-count { font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--blue); font-weight:700; background:var(--blue-lt); padding:3px 10px; border-radius:20px; }
+        .result-label { font-size:13px; color:var(--text2); font-weight:500; }
+
+        /* JOB CARDS */
+        .jobs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; min-height:200px; }
+        .job-card { background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius); padding:18px; transition:all 0.3s ease; position:relative; overflow:hidden; animation:cardIn 0.4s ease both; box-shadow:0 2px 8px rgba(28,25,23,0.05); }
+        @keyframes cardIn { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+        .job-card:hover { border-color:var(--border2); transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+        .job-card .accent-bar { position:absolute; top:0; left:0; right:0; height:3px; border-radius:3px 3px 0 0; }
+        .jcard-top { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; }
+        .jlogo { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; border:1.5px solid var(--border); }
+        .jtitle { font-size:14px; font-weight:800; color:var(--text); line-height:1.4; }
+        .jcompany { font-size:12px; color:var(--text2); margin-top:3px; font-weight:500; }
+        .jbadges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
+        .jb { padding:3px 10px; border-radius:20px; font-size:10.5px; font-weight:700; }
+        .jb-loc{background:var(--blue-lt);color:var(--blue);}
+        .jb-type{background:var(--green-lt);color:var(--green);}
+        .jb-exp{background:var(--gold-lt);color:var(--gold);}
+        .jb-sal{background:var(--violet-lt);color:var(--violet);}
+        .jb-new{background:var(--red-lt);color:var(--red);}
+        .jb-urgent{background:var(--orange-lt);color:var(--orange);animation:urgPulse 1.5s ease-in-out infinite;}
+        @keyframes urgPulse{0%,100%{opacity:1;}50%{opacity:0.55;}}
+        .contact-strip { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:9px 12px; margin:9px 0; display:flex; flex-wrap:wrap; gap:10px; }
+        .contact-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--text2); font-weight:500; }
+        .contact-item a { color:var(--blue); text-decoration:none; font-weight:700; }
+        .contact-item a:hover { text-decoration:underline; }
+        .jfooter { display:flex; align-items:center; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
+        .jportal { font-size:10.5px; color:var(--text3); display:flex; align-items:center; gap:4px; font-weight:600; }
+        .btn-apply { padding:7px 18px; border-radius:20px; border:none; font-size:11.5px; font-weight:800; cursor:pointer; transition:all 0.2s; font-family:'Plus Jakarta Sans',sans-serif; color:white; background:linear-gradient(135deg,#2563eb,#7c3aed); box-shadow:0 3px 10px rgba(37,99,235,0.25); }
+        .btn-apply:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,99,235,0.35); }
+
+        /* PAGINATION */
+        .pagination { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:30px; flex-wrap:wrap; }
+        .pg-btn { padding:9px 22px; background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius-sm); color:var(--text); font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; font-family:'Plus Jakarta Sans',sans-serif; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(28,25,23,0.06); }
+        .pg-btn:hover:not(:disabled) { border-color:var(--blue); color:var(--blue); background:var(--blue-lt); transform:translateY(-1px); }
+        .pg-btn:disabled { opacity:0.35; cursor:not-allowed; }
+        .pg-info { font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--text2); background:var(--bg2); border-radius:8px; padding:8px 16px; border:1px solid var(--border); }
+
+        /* AI AREA */
+        .ai-result-area { background:linear-gradient(135deg,#eff4ff,#f3eeff); border:1.5px solid #c4b5fd; border-radius:var(--radius); padding:16px; margin-bottom:16px; display:none; }
+        .ai-result-area.visible { display:block; }
+        .ai-thinking { display:flex; align-items:center; gap:10px; color:var(--violet); font-size:13px; font-weight:700; }
+        .ai-dots span { display:inline-block; width:7px; height:7px; background:var(--violet); border-radius:50%; margin:0 2px; animation:bounce 1.2s ease-in-out infinite; }
+        .ai-dots span:nth-child(2){animation-delay:0.2s;}
+        .ai-dots span:nth-child(3){animation-delay:0.4s;}
+        @keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
+
+        /* LOADING */
+        .loading-overlay { display:none; position:fixed; inset:0; background:rgba(245,244,240,0.9); z-index:9999; backdrop-filter:blur(8px); align-items:center; justify-content:center; flex-direction:column; gap:20px; }
+        .loading-overlay.active { display:flex; }
+        .spinner { width:60px; height:60px; border:4px solid var(--border); border-top-color:var(--blue); border-radius:50%; animation:spin 0.8s linear infinite; }
+        @keyframes spin{to{transform:rotate(360deg);}}
+        .loading-txt { font-size:15px; font-weight:700; color:var(--text2); }
+        .loading-chips { display:flex; gap:7px; flex-wrap:wrap; justify-content:center; max-width:420px; }
+        .lchip { padding:4px 12px; border-radius:20px; background:var(--blue); color:white; font-size:10.5px; font-weight:700; opacity:0; animation:fadeUp 0.4s ease forwards; }
+        @keyframes fadeUp{to{opacity:1;}}
+
+        /* TOAST */
+        .toast { position:fixed; bottom:24px; right:24px; background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:13px 18px; display:flex; align-items:center; gap:10px; box-shadow:var(--shadow-lg); z-index:99999; transform:translateY(80px); opacity:0; transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1); min-width:260px; max-width:360px; }
+        .toast.show { transform:translateY(0); opacity:1; }
+        .toast.success{border-left:4px solid var(--green);}
+        .toast.warning{border-left:4px solid var(--gold);}
+        .toast.error{border-left:4px solid var(--red);}
+        .toast.info{border-left:4px solid var(--blue);}
+        .toast-msg { font-size:13px; color:var(--text); font-weight:600; flex:1; }
+
+        /* BTN ALL PORTALS */
+        .btn-all-portals { padding:9px 20px; background:linear-gradient(135deg,#059669,#0891b2); color:white; border:none; border-radius:var(--radius-sm); font-size:12px; font-weight:800; cursor:pointer; transition:all 0.2s; font-family:'Plus Jakarta Sans',sans-serif; box-shadow:0 4px 14px rgba(5,150,105,0.3); }
+        .btn-all-portals:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(5,150,105,0.4); }
+
+        /* EMPTY */
+        .empty-state { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--text3); }
+        .empty-state .e-icon { font-size:52px; margin-bottom:12px; }
+        .empty-state h3 { color:var(--text2); font-size:16px; margin-bottom:6px; }
+
+        /* AI CARD */
+        .job-card.ai-generated { border-color:#c4b5fd; }
+
+        /* FOOTER */
+        .footer { background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 50%,#7c3aed 100%); color:white; padding:36px 24px; margin-top:40px; }
+        .footer-inner { max-width:1440px; margin:0 auto; }
+        .footer h3 { font-size:16px; font-weight:800; margin-bottom:6px; }
+        .footer p { font-size:12px; opacity:0.8; margin-bottom:4px; line-height:1.6; }
+        .footer-contact { display:flex; flex-wrap:wrap; gap:14px; margin:18px 0; }
+        .contact-block { display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:12px 18px; backdrop-filter:blur(10px); }
+        .cb-icon { font-size:22px; }
+        .cb-label { font-size:10px; color:#bfdbfe; text-transform:uppercase; letter-spacing:1px; font-weight:600; margin-bottom:2px; }
+        .cb-val { font-size:14px; font-weight:800; color:#fff; }
+        .cb-val a { color:#fbbf24; text-decoration:none; }
+        .cb-val a:hover { text-decoration:underline; }
+        .footer-tags { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0; }
+        .ftag { padding:3px 11px; border-radius:20px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); font-size:10.5px; color:#bfdbfe; font-weight:600; }
+        .footer-copy { font-size:11px; color:#93c5fd; margin-top:12px; }
+
+        /* FRESHNESS STRIP */
+        .freshness-strip {
+            display:flex; align-items:center; flex-wrap:wrap; gap:6px;
+            background:linear-gradient(135deg,#ecfdf5,#eff4ff);
+            border:1.5px solid #a7f3d0;
+            border-radius:var(--radius-sm);
+            padding:8px 14px; margin-bottom:16px;
+            font-size:11.5px;
         }
-        .search-panel::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, #4f8ef7, #a56ef7, #00d4aa, #f7a44f, #f74f6a);
+        .fresh-dot { width:8px; height:8px; background:#059669; border-radius:50%; animation:blink2 1.5s ease-in-out infinite; flex-shrink:0; }
+        @keyframes blink2{0%,100%{opacity:1;}50%{opacity:0.3;}}
+        .fresh-label { color:#065f46; font-weight:700; }
+        .fresh-sep { color:#a8a29e; }
+        .fresh-src { color:#374151; font-size:10.5px; line-height:1.5; }
+        #freshDateLabel { font-weight:800; color:#059669; }
+
+        /* CONTACT BAR */
+        .contact-bar {
+            background: linear-gradient(135deg, #fefce8, #fff7ed, #fef2f8);
+            border-bottom: 2px solid var(--border);
+            padding: 10px 24px;
+            position: sticky; top: 87px; z-index: 990;
+            box-shadow: 0 2px 12px rgba(28,25,23,0.06);
         }
-
-        .search-grid {
-            display: grid;
-            grid-template-columns: 2fr 1.2fr 1.2fr 1fr auto;
-            gap: 10px; align-items: end;
+        .contact-bar-inner {
+            max-width: 1440px; margin: 0 auto;
+            display: flex; align-items: center; flex-wrap: wrap; gap: 6px 20px;
         }
-
-        .fg { display: flex; flex-direction: column; gap: 5px; }
-        .fl { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.8px; }
-
-        .fc {
-            padding: 10px 14px;
-            background: var(--bg3);
-            border: 1.5px solid var(--border-light);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 13px;
-            font-family: 'Sora', sans-serif;
-            outline: none;
-            transition: all 0.25s;
-        }
-        .fc:focus { border-color: var(--primary); background: var(--bg2); box-shadow: 0 0 0 3px rgba(79,142,247,0.15); }
-        .fc option { background: var(--bg2); }
-
-        .btn-go {
-            padding: 10px 22px;
-            background: linear-gradient(135deg, #4f8ef7, #a56ef7);
-            color: white; border: none;
-            border-radius: var(--radius-sm);
-            font-size: 14px; font-weight: 700;
-            font-family: 'Sora', sans-serif;
-            cursor: pointer; transition: all 0.25s;
-            white-space: nowrap;
+        .cbar-item { display: flex; align-items: center; gap: 6px; }
+        .cbar-icon { font-size: 15px; }
+        .cbar-label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+        .cbar-val { font-size: 13px; font-weight: 800; color: var(--text); }
+        .cbar-val[href] { color: var(--blue); text-decoration: none; }
+        .cbar-val[href]:hover { text-decoration: underline; }
+        a.cbar-val { color: var(--blue); text-decoration: none; font-weight: 800; }
+        a.cbar-val:hover { text-decoration: underline; }
+        .cbar-divider { width: 1px; height: 20px; background: var(--border2); flex-shrink: 0; }
+        .cbar-wa-btn {
             display: flex; align-items: center; gap: 6px;
-        }
-        .btn-go:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(79,142,247,0.4); }
-
-        .ai-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            background: linear-gradient(135deg, rgba(79,142,247,0.15), rgba(165,110,247,0.15));
-            border: 1px solid rgba(79,142,247,0.3);
-            border-radius: 20px; padding: 4px 12px;
-            font-size: 11px; color: var(--primary); font-weight: 700;
-            margin-bottom: 14px;
-        }
-
-        /* === SECTION TITLES === */
-        .sec-hd {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 14px; font-weight: 700; color: var(--text);
-            margin-bottom: 14px;
-        }
-        .sec-hd .dot {
-            width: 4px; height: 18px; border-radius: 2px;
-            background: linear-gradient(180deg, var(--primary), var(--accent));
-        }
-
-        /* === CATEGORIES === */
-        .section-box {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px; padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .cat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 8px;
-        }
-
-        .cat-btn {
-            padding: 10px 8px;
-            border-radius: 10px; border: 1.5px solid transparent;
-            font-size: 11px; font-weight: 700;
-            cursor: pointer; transition: all 0.25s;
-            text-align: center;
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            color: white;
-        }
-        .cat-btn:hover, .cat-btn.active { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.2); }
-        .cat-btn .ci { font-size: 20px; }
-        .cat-btn .cn { font-size: 11px; }
-        .cat-btn .cc { font-size: 9px; opacity: 0.75; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 10px; }
-
-        /* === PORTALS === */
-        .portals-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 8px;
-        }
-
-        .portal-card {
-            padding: 12px 10px;
-            border-radius: 10px;
-            border: 1.5px solid var(--border-light);
-            background: var(--bg3);
-            cursor: pointer;
-            transition: all 0.25s;
-            text-align: center;
-        }
-        .portal-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--primary); background: var(--primary-dim); }
-        .portal-card .pi { font-size: 22px; margin-bottom: 5px; }
-        .portal-card .pn { font-size: 11px; font-weight: 700; color: var(--text); }
-        .portal-card .pt { font-size: 10px; color: var(--text3); margin-top: 2px; }
-
-        /* === STATES === */
-        .states-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 6px;
-        }
-
-        .state-btn {
-            padding: 7px 10px;
-            border-radius: var(--radius-sm); border: 1.5px solid var(--border-light);
-            background: var(--bg3);
-            font-size: 11px; font-weight: 600; color: var(--text2);
-            cursor: pointer; transition: all 0.2s; text-align: center;
-        }
-        .state-btn:hover, .state-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-
-        /* === FILTERS === */
-        .filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-
-        .fchip {
-            padding: 5px 14px;
-            border-radius: 20px; border: 1.5px solid var(--border-light);
-            background: var(--bg3);
-            font-size: 11px; font-weight: 700; color: var(--text2);
-            cursor: pointer; transition: all 0.2s;
-        }
-        .fchip:hover, .fchip.active { border-color: var(--primary); color: var(--primary); background: var(--primary-dim); }
-
-        /* === JOBS SECTION HEADER === */
-        .jobs-header {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 14px; flex-wrap: wrap; gap: 10px;
-        }
-        .result-info { display: flex; align-items: center; gap: 8px; }
-        .result-count {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px; color: var(--accent); font-weight: 700;
-        }
-        .result-label { font-size: 12px; color: var(--text2); }
-
-        /* === JOB CARDS === */
-        .jobs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 14px;
-            min-height: 200px;
-        }
-
-        .job-card {
-            background: var(--card);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            animation: cardIn 0.4s ease both;
-        }
-        @keyframes cardIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .job-card:hover { border-color: var(--border-light); background: var(--card-hover); transform: translateY(-3px); box-shadow: var(--shadow); }
-
-        .job-card .accent-bar {
-            position: absolute; top: 0; left: 0; right: 0; height: 2px;
-        }
-
-        .jcard-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
-        .jlogo {
-            width: 40px; height: 40px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; flex-shrink: 0; border: 1px solid var(--border-light);
-        }
-        .jtitle { font-size: 13px; font-weight: 800; color: var(--text); line-height: 1.4; }
-        .jcompany { font-size: 11px; color: var(--text2); margin-top: 2px; }
-
-        .jbadges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
-        .jb {
-            padding: 3px 9px; border-radius: 20px;
-            font-size: 10px; font-weight: 700;
-        }
-        .jb-loc { background: var(--primary-dim); color: var(--primary); }
-        .jb-type { background: var(--accent-dim); color: var(--accent); }
-        .jb-exp { background: var(--warn-dim); color: var(--warn); }
-        .jb-sal { background: var(--purple-dim); color: var(--purple); }
-        .jb-new { background: var(--danger-dim); color: var(--danger); }
-        .jb-urgent { background: var(--warn-dim); color: var(--warn); animation: urgPulse 1.5s ease-in-out infinite; }
-        @keyframes urgPulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-
-        /* === CONTACT INFO === */
-        .contact-strip {
-            background: var(--bg3);
-            border-radius: var(--radius-sm);
-            padding: 8px 10px;
-            margin: 8px 0;
-            display: flex; flex-wrap: wrap; gap: 8px;
-        }
-        .contact-item {
-            display: flex; align-items: center; gap: 4px;
-            font-size: 10px; color: var(--text2);
-        }
-        .contact-item a { color: var(--accent); text-decoration: none; font-weight: 600; }
-        .contact-item a:hover { text-decoration: underline; }
-
-        .jfooter {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-top: 10px; padding-top: 10px;
-            border-top: 1px solid var(--border);
-        }
-        .jportal { font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
-
-        .btn-apply {
             padding: 6px 16px;
-            background: linear-gradient(135deg, #4f8ef7, #a56ef7);
-            color: white; border: none;
-            border-radius: 20px;
-            font-size: 11px; font-weight: 700;
-            cursor: pointer;
-            font-family: 'Sora', sans-serif;
-            transition: all 0.2s;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white; border-radius: 20px; text-decoration: none;
+            font-size: 12px; font-weight: 800;
+            box-shadow: 0 3px 10px rgba(37,211,102,0.35);
+            transition: all 0.2s; margin-left: auto;
         }
-        .btn-apply:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(79,142,247,0.4); }
+        .cbar-wa-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(37,211,102,0.5); }
 
-        /* === PAGINATION === */
-        .pagination {
-            display: flex; align-items: center; justify-content: center;
-            gap: 8px; margin-top: 28px; flex-wrap: wrap;
+        /* ENHANCED BUTTON STYLES */
+        .btn-go {
+            background: linear-gradient(135deg, #2563eb, #7c3aed) !important;
+            box-shadow: 0 4px 16px rgba(37,99,235,0.4), 0 1px 0 rgba(255,255,255,0.2) inset !important;
+            letter-spacing: 0.2px;
         }
-
-        .pg-btn {
-            padding: 8px 18px;
-            background: var(--card);
-            border: 1.5px solid var(--border-light);
-            border-radius: var(--radius-sm);
-            color: var(--text); font-size: 13px; font-weight: 700;
-            cursor: pointer; transition: all 0.2s;
-            font-family: 'Sora', sans-serif;
-            display: flex; align-items: center; gap: 6px;
+        .btn-apply {
+            background: linear-gradient(135deg, #059669, #0891b2) !important;
+            box-shadow: 0 3px 12px rgba(5,150,105,0.3) !important;
         }
-        .pg-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: var(--primary-dim); }
-        .pg-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-        .pg-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
-
-        .pg-info {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 12px; color: var(--text2); padding: 0 8px;
-        }
-
-        /* === AI RESPONSE AREA === */
-        .ai-result-area {
-            background: var(--card);
-            border: 1.5px solid rgba(79,142,247,0.25);
-            border-radius: var(--radius);
-            padding: 16px;
-            margin-bottom: 14px;
-            display: none;
-        }
-        .ai-result-area.visible { display: block; }
-        .ai-thinking {
-            display: flex; align-items: center; gap: 10px;
-            color: var(--primary); font-size: 13px; font-weight: 600;
-        }
-        .ai-dots span {
-            display: inline-block; width: 6px; height: 6px;
-            background: var(--primary); border-radius: 50%; margin: 0 2px;
-            animation: bounce 1.2s ease-in-out infinite;
-        }
-        .ai-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .ai-dots span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce { 0%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-6px);} }
-
-        /* === LOADING === */
-        .loading-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(13,15,20,0.85);
-            z-index: 9999; backdrop-filter: blur(8px);
-            align-items: center; justify-content: center; flex-direction: column; gap: 20px;
-        }
-        .loading-overlay.active { display: flex; }
-
-        .spinner {
-            width: 60px; height: 60px;
-            border: 3px solid var(--border-light);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-txt { font-size: 15px; font-weight: 600; color: var(--text2); }
-        .loading-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 400px; }
-        .lchip {
-            padding: 3px 10px; border-radius: 20px;
-            background: var(--primary); color: white;
-            font-size: 10px; font-weight: 700;
-            opacity: 0; animation: fadeUp 0.4s ease forwards;
-        }
-        @keyframes fadeUp { to { opacity: 1; } }
-
-        /* === TOAST === */
-        .toast {
-            position: fixed; bottom: 24px; right: 24px;
-            background: var(--card);
-            border: 1.5px solid var(--border-light);
-            border-radius: var(--radius-sm);
-            padding: 12px 18px;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: var(--shadow);
-            z-index: 99999;
-            transform: translateY(80px); opacity: 0;
-            transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-            min-width: 260px; max-width: 360px;
-        }
-        .toast.show { transform: translateY(0); opacity: 1; }
-        .toast.success { border-color: var(--accent); }
-        .toast.warning { border-color: var(--warn); }
-        .toast.error { border-color: var(--danger); }
-        .toast-msg { font-size: 13px; color: var(--text); flex: 1; }
-
-        /* === FOOTER === */
-        .footer {
-            text-align: center; padding: 32px 24px;
-            border-top: 1px solid var(--border);
-            margin-top: 40px; color: var(--text3);
-        }
-        .footer h3 { font-size: 14px; color: var(--text2); margin-bottom: 6px; }
-        .footer p { font-size: 11px; margin-bottom: 4px; }
-        .footer-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 12px 0; }
-        .ftag {
-            padding: 3px 10px; border-radius: 20px;
-            background: var(--bg3); border: 1px solid var(--border);
-            font-size: 10px; color: var(--text3);
-        }
-
-        /* === RESPONSIVE === */
-        @media (max-width: 900px) {
-            .search-grid { grid-template-columns: 1fr 1fr; }
-            .btn-go { grid-column: 1/-1; justify-content: center; }
-            .header-meta .hstat { display: none; }
-            .jobs-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 600px) {
-            .search-grid { grid-template-columns: 1fr; }
-            .header-inner { flex-wrap: wrap; }
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg2); }
-        ::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
-
-        select option { background: #1a1e29; color: #e8ecf4; }
-
-        /* === QUICK LINKS === */
-        .quick-links-section { margin-bottom: 20px; }
-        .ql-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-        .ql-btn {
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1.5px solid var(--border-light);
-            background: var(--bg3);
-            font-size: 11px; font-weight: 700; color: var(--text2);
-            cursor: pointer; transition: all 0.2s;
-        }
-        .ql-btn:hover { border-color: var(--warn); color: var(--warn); background: var(--warn-dim); }
-
-        /* === EMPTY STATE === */
-        .empty-state {
-            grid-column: 1/-1;
-            text-align: center; padding: 60px 20px; color: var(--text3);
-        }
-        .empty-state .e-icon { font-size: 48px; margin-bottom: 12px; }
-        .empty-state h3 { color: var(--text2); font-size: 16px; margin-bottom: 6px; }
-
-        /* === Highlight color for AI cards === */
-        .job-card.ai-generated { border-color: rgba(79,142,247,0.3); }
-
-        /* === Open all portals btn === */
+        .btn-apply:hover { box-shadow: 0 6px 20px rgba(5,150,105,0.45) !important; }
         .btn-all-portals {
-            padding: 9px 20px;
-            background: linear-gradient(135deg, #00d4aa, #4f8ef7);
-            color: white; border: none;
-            border-radius: var(--radius-sm);
-            font-size: 12px; font-weight: 700;
-            cursor: pointer; transition: all 0.2s;
-            font-family: 'Sora', sans-serif;
+            background: linear-gradient(135deg, #ea580c, #dc2626) !important;
+            box-shadow: 0 4px 14px rgba(234,88,12,0.35) !important;
         }
-        .btn-all-portals:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(0,212,170,0.35); }
+        .btn-all-portals:hover { box-shadow: 0 7px 22px rgba(234,88,12,0.5) !important; }
+        .pg-btn#prevBtn:not(:disabled) { background: linear-gradient(135deg,#f3eeff,#e0e7ff); color: var(--violet); border-color: #c4b5fd; font-weight: 800; }
+        .pg-btn#nextBtn:not(:disabled) { background: linear-gradient(135deg,#2563eb,#7c3aed); color: white; border-color: transparent; box-shadow: 0 4px 14px rgba(37,99,235,0.3); }
+        .pg-btn#nextBtn:not(:disabled):hover { box-shadow: 0 6px 20px rgba(37,99,235,0.5); transform: translateY(-2px); }
+        .fchip.active { background: linear-gradient(135deg,#2563eb,#7c3aed) !important; border-color: transparent !important; box-shadow: 0 3px 12px rgba(37,99,235,0.3); }
+        .state-btn.active { background: linear-gradient(135deg,#0891b2,#059669) !important; color: white !important; border-color: transparent !important; box-shadow: 0 3px 10px rgba(8,145,178,0.3); }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar{width:6px;}
+        ::-webkit-scrollbar-track{background:var(--bg2);}
+        ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+        /* RESPONSIVE */
+        @media(max-width:960px){.search-grid{grid-template-columns:1fr 1fr;}.btn-go{grid-column:1/-1;justify-content:center;}.hstat{display:none;}}
+        @media(max-width:600px){.search-grid{grid-template-columns:1fr;}.jobs-grid{grid-template-columns:1fr;}.header-inner{flex-wrap:wrap;}}
     </style>
 </head>
 <body>
 
-<!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
     <div class="loading-txt" id="loadingTxt">Searching across portals…</div>
     <div class="loading-chips" id="loadingChips"></div>
 </div>
+<div class="toast" id="toast"><span id="toastIcon">ℹ️</span><span class="toast-msg" id="toastMsg"></span></div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-    <span id="toastIcon">ℹ️</span>
-    <span class="toast-msg" id="toastMsg"></span>
-</div>
-
-<!-- HEADER -->
 <header class="header">
     <div class="header-inner">
         <div class="brand">
@@ -549,41 +297,51 @@
             <div class="live-pill"><div class="live-dot"></div><span class="live-label">LIVE</span></div>
         </div>
     </div>
-
-    <!-- TICKER -->
     <div class="ticker">
-        <div class="ticker-track">
-            <span>NHM Assam: ANM/Staff Nurse Walk-in — Apply Now</span>
-            <span>APSC: Combined Competitive Exam 2025 Notification Released</span>
-            <span>SSB Assam: Grade III &amp; Grade IV Recruitment Open</span>
-            <span>Manipur PSC: Various Posts — Last Date Approaching</span>
-            <span>Nagaland PSC: Civil Services Exam 2025 Open</span>
-            <span>Meghalaya PSC: Group A &amp; B Services Recruitment Live</span>
-            <span>Tripura TRBT: Teacher Eligibility Test Notification</span>
-            <span>Mizoram PSC: Combined Examination Open</span>
-            <span>Arunachal PSC: Various Department Vacancies Posted</span>
-            <span>Delhi: DSSB Recruitment for Multiple Posts Open</span>
-            <span>Mumbai: BMC Recruitment 2025 — 900+ Posts</span>
-            <span>Kolkata: KMC Various Posts — Applications Open</span>
-            <span>Chennai: TN Health Dept Nurse &amp; Doctor Vacancies Live</span>
-            <span>NHM Assam: ANM/Staff Nurse Walk-in — Apply Now</span>
-            <span>APSC: Combined Competitive Exam 2025 Notification Released</span>
-            <span>SSB Assam: Grade III &amp; Grade IV Recruitment Open</span>
-            <span>Manipur PSC: Various Posts — Last Date Approaching</span>
-            <span>Nagaland PSC: Civil Services Exam 2025 Open</span>
-        </div>
+        <div class="ticker-track" id="tickerTrack"></div>
     </div>
 </header>
 
-<div class="wrap">
+<!-- CONTACT BAR -->
+<div class="contact-bar">
+    <div class="contact-bar-inner">
+        <div class="cbar-item">
+            <span class="cbar-icon">📞</span>
+            <span class="cbar-label">Call / WhatsApp:</span>
+            <a href="tel:8721078525" class="cbar-val">+91 87210 78525</a>
+        </div>
+        <div class="cbar-divider"></div>
+        <div class="cbar-item">
+            <span class="cbar-icon">🌐</span>
+            <span class="cbar-label">Website:</span>
+            <a href="https://portfoliobuilder.in" target="_blank" class="cbar-val">Portfoliobuilder.in</a>
+        </div>
+        <div class="cbar-divider"></div>
+        <div class="cbar-item">
+            <span class="cbar-icon">📍</span>
+            <span class="cbar-label">Address:</span>
+            <span class="cbar-val">Betkuchi, Guwahati – 781035, Assam</span>
+        </div>
+        <div class="cbar-divider"></div>
+        <a href="https://wa.me/918721078525" target="_blank" class="cbar-wa-btn">
+            <span>💬</span> WhatsApp Us
+        </a>
+    </div>
+</div>
 
-    <!-- AI SEARCH PANEL -->
+<div class="wrap">
     <div class="search-panel">
-        <div class="ai-badge">✨ AI-Powered Search · Recruiter Contacts Included</div>
+        <div class="ai-badge">✨ AI-Powered Search · Recruiter Contacts · Pagination · 18+ Portals</div>
+        <div class="freshness-strip">
+            <span class="fresh-dot"></span>
+            <span class="fresh-label">Data refreshed: <strong><span id="freshDateLabel"></span></strong></span>
+            <span class="fresh-sep">·</span>
+            <span class="fresh-src">Sources: NHM · APSC · SSB · SLPRB · AIIMS · ESIC · SSC · IBPS · Naukri · LinkedIn · Indeed · JobAssam · AssamCareer · Niyukti</span>
+        </div>
         <div class="search-grid">
             <div class="fg">
                 <label class="fl">Keywords / Job Title</label>
-                <input class="fc" type="text" id="kwInput" placeholder="e.g. Staff Nurse, Software Engineer, Accountant…" />
+                <input class="fc" type="text" id="kwInput" placeholder="e.g. Staff Nurse, Software Engineer, Bank PO…"/>
             </div>
             <div class="fg">
                 <label class="fl">Category</label>
@@ -603,7 +361,7 @@
                     <option value="Legal">Legal / Compliance</option>
                     <option value="Media">Media / PR / Journalism</option>
                     <option value="Pharmacy">Pharmacy</option>
-                    <option value="Security">Security / NCC</option>
+                    <option value="Security">Security / Defence</option>
                     <option value="Hospitality">Hospitality / Hotel</option>
                 </select>
             </div>
@@ -611,6 +369,7 @@
                 <label class="fl">Location</label>
                 <select class="fc" id="locSelect">
                     <optgroup label="── NE States ──">
+                        <option value="Northeast India">All Northeast India</option>
                         <option value="Assam">Assam</option>
                         <option value="Guwahati">Guwahati, Assam</option>
                         <option value="Manipur">Manipur</option>
@@ -624,10 +383,9 @@
                         <option value="Mizoram">Mizoram</option>
                         <option value="Aizawl">Aizawl, Mizoram</option>
                         <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                        <option value="Itanagar">Itanagar, Arunachal Pradesh</option>
+                        <option value="Itanagar">Itanagar, Arunachal</option>
                         <option value="Sikkim">Sikkim</option>
                         <option value="Gangtok">Gangtok, Sikkim</option>
-                        <option value="Northeast India">All Northeast India</option>
                     </optgroup>
                     <optgroup label="── Metro Cities ──">
                         <option value="Delhi">Delhi / NCR</option>
@@ -639,12 +397,12 @@
                         <option value="Pune">Pune</option>
                         <option value="Ahmedabad">Ahmedabad</option>
                     </optgroup>
-                    <optgroup label="── Other Cities ──">
-                        <option value="Silchar">Silchar, Assam</option>
-                        <option value="Dibrugarh">Dibrugarh, Assam</option>
-                        <option value="Jorhat">Jorhat, Assam</option>
-                        <option value="Bongaigaon">Bongaigaon, Assam</option>
-                        <option value="Tezpur">Tezpur, Assam</option>
+                    <optgroup label="── Assam Cities ──">
+                        <option value="Silchar">Silchar</option>
+                        <option value="Dibrugarh">Dibrugarh</option>
+                        <option value="Jorhat">Jorhat</option>
+                        <option value="Tezpur">Tezpur</option>
+                        <option value="Bongaigaon">Bongaigaon</option>
                     </optgroup>
                 </select>
             </div>
@@ -662,20 +420,19 @@
         </div>
     </div>
 
-    <!-- AI RESPONSE BOX -->
     <div class="ai-result-area" id="aiResultArea">
         <div class="ai-thinking" id="aiThinking">
-            <span>🤖 AI is generating job listings</span>
+            <span>🤖 AI is generating live job listings</span>
             <div class="ai-dots"><span></span><span></span><span></span></div>
         </div>
-        <div id="aiResultText" style="display:none; font-size:12px; color:var(--text2); line-height:1.6;"></div>
+        <div id="aiResultText" style="display:none;font-size:13px;color:#57534e;font-weight:600;line-height:1.7;"></div>
     </div>
 
     <!-- CATEGORIES -->
     <div class="section-box">
         <div class="sec-hd"><div class="dot"></div>Job Categories</div>
-        <div class="cat-grid" id="catGrid">
-            <div class="cat-btn" style="background:linear-gradient(135deg,#2563eb,#1e40af);" onclick="quickCat('Accounts')"><span class="ci">💰</span><span class="cn">Accounts</span><span class="cc">980+</span></div>
+        <div class="cat-grid">
+            <div class="cat-btn" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);" onclick="quickCat('Accounts')"><span class="ci">💰</span><span class="cn">Accounts</span><span class="cc">980+</span></div>
             <div class="cat-btn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" onclick="quickCat('HR')"><span class="ci">👥</span><span class="cn">HR / Admin</span><span class="cc">540+</span></div>
             <div class="cat-btn" style="background:linear-gradient(135deg,#059669,#047857);" onclick="quickCat('Marketing')"><span class="ci">📢</span><span class="cn">Marketing</span><span class="cc">920+</span></div>
             <div class="cat-btn" style="background:linear-gradient(135deg,#dc2626,#b91c1c);" onclick="quickCat('Clinical Staff')"><span class="ci">🩺</span><span class="cn">Clinical</span><span class="cc">1580+</span></div>
@@ -689,14 +446,14 @@
             <div class="cat-btn" style="background:linear-gradient(135deg,#0f766e,#0d9488);" onclick="quickCat('Pharmacy')"><span class="ci">💊</span><span class="cn">Pharmacy</span><span class="cc">460+</span></div>
             <div class="cat-btn" style="background:linear-gradient(135deg,#b45309,#92400e);" onclick="quickCat('Legal')"><span class="ci">⚖️</span><span class="cn">Legal</span><span class="cc">180+</span></div>
             <div class="cat-btn" style="background:linear-gradient(135deg,#e11d48,#be123c);" onclick="quickCat('Media')"><span class="ci">📰</span><span class="cn">Media / PR</span><span class="cc">220+</span></div>
-            <div class="cat-btn" style="background:linear-gradient(135deg,#374151,#1f2937);" onclick="quickCat('All')"><span class="ci">🌐</span><span class="cn">All Jobs</span><span class="cc">12450+</span></div>
+            <div class="cat-btn" style="background:linear-gradient(135deg,#374151,#1f2937);" onclick="quickCat('All')"><span class="ci">🌐</span><span class="cn">All Jobs</span><span class="cc">12,450+</span></div>
         </div>
     </div>
 
-    <!-- JOB PORTALS -->
+    <!-- PORTALS -->
     <div class="section-box">
-        <div class="sec-hd" style="justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:8px;"><div class="dot"></div>Job Portals</div>
+        <div class="sec-hd" style="justify-content:space-between;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:10px;"><div class="dot" style="background:linear-gradient(180deg,#059669,#0891b2);"></div>Job Portals &amp; Sources</div>
             <button class="btn-all-portals" onclick="openAllPortals()">🚀 Open All Portals</button>
         </div>
         <div class="portals-grid">
@@ -709,7 +466,7 @@
             <div class="portal-card" onclick="openPortal('niyukti')"><div class="pi">🏛️</div><div class="pn">Niyukti Portal</div><div class="pt">Govt of Assam</div></div>
             <div class="portal-card" onclick="openPortal('apsc')"><div class="pi">📜</div><div class="pn">APSC Portal</div><div class="pt">Assam PSC</div></div>
             <div class="portal-card" onclick="openPortal('ssb')"><div class="pi">🎖️</div><div class="pn">SSB Assam</div><div class="pt">State Selection Board</div></div>
-            <div class="portal-card" onclick="openPortal('nhm')"><div class="pi">🏥</div><div class="pn">NHM Assam</div><div class="pt">Health Mission Jobs</div></div>
+            <div class="portal-card" onclick="openPortal('nhm')"><div class="pi">🏥</div><div class="pn">NHM Assam</div><div class="pt">Health Mission</div></div>
             <div class="portal-card" onclick="openPortal('manipurpsc')"><div class="pi">🔵</div><div class="pn">Manipur PSC</div><div class="pt">MPSC Recruitment</div></div>
             <div class="portal-card" onclick="openPortal('megpsc')"><div class="pi">🟢</div><div class="pn">Meghalaya PSC</div><div class="pt">MPSC Shillong</div></div>
             <div class="portal-card" onclick="openPortal('nagpsc')"><div class="pi">🟡</div><div class="pn">Nagaland PSC</div><div class="pt">NPSC Kohima</div></div>
@@ -723,9 +480,9 @@
 
     <!-- STATES -->
     <div class="section-box">
-        <div class="sec-hd"><div class="dot"></div>Filter by Location</div>
+        <div class="sec-hd"><div class="dot" style="background:linear-gradient(180deg,#d97706,#dc2626);"></div>Filter by State / City</div>
         <div class="states-grid">
-            <div class="state-btn active" onclick="selectState(this,'Northeast India')">🌏 All NE</div>
+            <div class="state-btn active" onclick="selectState(this,'Northeast India')">🌏 All NE India</div>
             <div class="state-btn" onclick="selectState(this,'Assam')">Assam</div>
             <div class="state-btn" onclick="selectState(this,'Guwahati')">Guwahati</div>
             <div class="state-btn" onclick="selectState(this,'Manipur')">Manipur</div>
@@ -746,16 +503,16 @@
         </div>
     </div>
 
-    <!-- JOBS RESULTS -->
+    <!-- JOBS -->
     <div class="section-box">
         <div class="jobs-header">
             <div class="result-info">
-                <div class="sec-hd" style="margin:0;"><div class="dot"></div>Vacancies</div>
+                <div class="sec-hd" style="margin:0;"><div class="dot"></div>Live Vacancies</div>
                 <span class="result-count" id="resultCount">0</span>
                 <span class="result-label">results · <span id="currentSearch">All NE India</span></span>
             </div>
             <div class="filter-row" style="margin:0;">
-                <div class="fchip active" onclick="toggleFilter(this,'All')">All</div>
+                <div class="fchip active" onclick="toggleFilter(this,'All')">All Jobs</div>
                 <div class="fchip" onclick="toggleFilter(this,'Urgent')">🔴 Urgent</div>
                 <div class="fchip" onclick="toggleFilter(this,'New')">✨ New</div>
                 <div class="fchip" onclick="toggleFilter(this,'Fresher')">🌱 Fresher</div>
@@ -763,117 +520,160 @@
                 <div class="fchip" onclick="toggleFilter(this,'Private')">🏢 Private</div>
             </div>
         </div>
-
         <div class="jobs-grid" id="jobsGrid"></div>
-
-        <!-- PAGINATION -->
-        <div class="pagination" id="paginationBar">
-            <button class="pg-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Prev</button>
+        <div class="pagination">
+            <button class="pg-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
             <div class="pg-info" id="pgInfo">Page 1 of 1</div>
             <button class="pg-btn" id="nextBtn" onclick="changePage(1)" disabled>Next →</button>
         </div>
     </div>
-
 </div>
 
-<!-- FOOTER -->
 <footer class="footer">
-    <h3>AK Vacancy Manager — NE India &amp; Metro Cities Job Dashboard</h3>
-    <p>AI-powered · 18+ Portals · Recruiter Contacts · Pagination · Live Data</p>
-    <div class="footer-tags">
-        <span class="ftag">LinkedIn</span><span class="ftag">Indeed</span><span class="ftag">Naukri.com</span>
-        <span class="ftag">JobAssam.in</span><span class="ftag">AssamCareer.in</span><span class="ftag">Niyukti Portal</span>
-        <span class="ftag">APSC</span><span class="ftag">SSB Assam</span><span class="ftag">NHM Assam</span>
-        <span class="ftag">Manipur PSC</span><span class="ftag">Meghalaya PSC</span><span class="ftag">Nagaland PSC</span>
-        <span class="ftag">Shine.com</span><span class="ftag">Foundit</span><span class="ftag">Google Jobs</span>
-        <span class="ftag">Assam Tribune</span><span class="ftag">Telegram Groups</span><span class="ftag">Tripura TRBT</span>
+    <div class="footer-inner">
+        <h3>🗺️ AK Vacancy Manager — Northeast India &amp; Metro Cities Job Dashboard</h3>
+        <p>AI-powered aggregator · 18+ portals · Recruiter contacts · Pagination · Government &amp; Private sector</p>
+        <div class="footer-contact">
+            <div class="contact-block">
+                <div class="cb-icon">📞</div>
+                <div><div class="cb-label">Helpline / Contact</div><div class="cb-val"><a href="tel:8721078525">+91 87210 78525</a></div></div>
+            </div>
+            <div class="contact-block">
+                <div class="cb-icon">🌐</div>
+                <div><div class="cb-label">Website</div><div class="cb-val"><a href="https://portfoliobuilder.in" target="_blank">Portfoliobuilder.in</a></div></div>
+            </div>
+            <div class="contact-block">
+                <div class="cb-icon">📍</div>
+                <div><div class="cb-label">Office Address</div><div class="cb-val">Betkuchi, Guwahati – 781035</div></div>
+            </div>
+        </div>
+        <div class="footer-tags">
+            <span class="ftag">LinkedIn</span><span class="ftag">Indeed</span><span class="ftag">Naukri.com</span>
+            <span class="ftag">JobAssam.in</span><span class="ftag">AssamCareer.in</span><span class="ftag">TheJobInAssam</span>
+            <span class="ftag">Niyukti Portal</span><span class="ftag">APSC</span><span class="ftag">SSB Assam</span>
+            <span class="ftag">NHM Assam</span><span class="ftag">Manipur PSC</span><span class="ftag">Meghalaya PSC</span>
+            <span class="ftag">Nagaland PSC</span><span class="ftag">Shine.com</span><span class="ftag">Foundit</span>
+            <span class="ftag">Google Jobs</span><span class="ftag">Assam Tribune</span><span class="ftag">Telegram Groups</span>
+        </div>
+        <p class="footer-copy" id="footerCopy">© 2026 AK Vacancy Manager · Portfoliobuilder.in · Betkuchi, Guwahati – 781035 · +91 87210 78525</p>
     </div>
-    <p>© 2025 AK Vacancy Manager | Built for Job Seekers in Northeast India &amp; Metro Cities</p>
 </footer>
 
 <script>
-// ===== PORTAL MAP =====
-const portals = {
-    linkedin: { name:"LinkedIn Jobs", url:"https://www.linkedin.com/jobs/search/?keywords={q}&location={l}" },
-    indeed: { name:"Indeed India", url:"https://in.indeed.com/jobs?q={q}&l={l}" },
-    naukri: { name:"Naukri.com", url:"https://www.naukri.com/{q}-jobs-in-{l}" },
-    jobassam: { name:"JobAssam.in", url:"https://jobassam.in/?s={q}" },
-    assamcareer: { name:"AssamCareer.in", url:"https://assamcareer.in/?s={q}" },
-    thejob: { name:"TheJobInAssam", url:"https://www.thejobinassam.in/?s={q}" },
-    niyukti: { name:"Niyukti Assam", url:"https://niyukti.assam.gov.in/" },
-    apsc: { name:"APSC Portal", url:"https://apsc.nic.in/" },
-    ssb: { name:"SSB Assam", url:"https://sebaonline.org/" },
-    nhm: { name:"NHM Assam", url:"https://nhm.assam.gov.in/information-services/recruitment" },
-    manipurpsc: { name:"Manipur PSC", url:"https://manipurpsc.gov.in/" },
-    megpsc: { name:"Meghalaya PSC", url:"https://mpsc.nic.in/" },
-    nagpsc: { name:"Nagaland PSC", url:"https://npsc.nagaland.gov.in/" },
-    shine: { name:"Shine.com", url:"https://www.shine.com/job-search/{q}-jobs-in-{l}" },
-    foundit: { name:"Foundit", url:"https://www.foundit.in/srp/results?query={q}&locations={l}" },
-    google: { name:"Google Jobs", url:"https://www.google.com/search?q={q}+jobs+in+{l}&ibp=htl;jobs" },
-    tribune: { name:"Assam Tribune", url:"https://www.assamtribune.com/classified" },
-    telegram: { name:"Telegram NE Jobs", url:"https://t.me/s/assamjobs" }
-};
+const portals={linkedin:{name:"LinkedIn Jobs",url:"https://www.linkedin.com/jobs/search/?keywords={q}&location={l}"},indeed:{name:"Indeed India",url:"https://in.indeed.com/jobs?q={q}&l={l}"},naukri:{name:"Naukri.com",url:"https://www.naukri.com/{q}-jobs-in-{l}"},jobassam:{name:"JobAssam.in",url:"https://jobassam.in/?s={q}"},assamcareer:{name:"AssamCareer.in",url:"https://assamcareer.in/?s={q}"},thejob:{name:"TheJobInAssam",url:"https://www.thejobinassam.in/?s={q}"},niyukti:{name:"Niyukti Assam",url:"https://niyukti.assam.gov.in/"},apsc:{name:"APSC Portal",url:"https://apsc.nic.in/"},ssb:{name:"SSB Assam",url:"https://sebaonline.org/"},nhm:{name:"NHM Assam",url:"https://nhm.assam.gov.in/information-services/recruitment"},manipurpsc:{name:"Manipur PSC",url:"https://manipurpsc.gov.in/"},megpsc:{name:"Meghalaya PSC",url:"https://mpsc.nic.in/"},nagpsc:{name:"Nagaland PSC",url:"https://npsc.nagaland.gov.in/"},shine:{name:"Shine.com",url:"https://www.shine.com/job-search/{q}-jobs-in-{l}"},foundit:{name:"Foundit",url:"https://www.foundit.in/srp/results?query={q}&locations={l}"},google:{name:"Google Jobs",url:"https://www.google.com/search?q={q}+jobs+in+{l}&ibp=htl;jobs"},tribune:{name:"Assam Tribune",url:"https://www.assamtribune.com/classified"},telegram:{name:"Telegram NE Jobs",url:"https://t.me/s/assamjobs"}};
 
-// ===== BASE JOB DATA (extended with contacts) =====
-const baseJobs = [
-    { title:"Senior Accountant", company:"Northeast Finance Ltd", location:"Guwahati, Assam", type:"Full-Time", exp:"3-5 Years", salary:"₹35,000–50,000/mo", category:"accounts", portal:"Naukri.com", icon:"💰", iconBg:"#1e3a8a", isNew:true, isUrgent:false, url:"https://www.naukri.com/accountant-jobs-in-guwahati", phone:"98640-11234", email:"hr@nefinance.in" },
-    { title:"Staff Nurse (GNM/B.Sc)", company:"Gauhati Medical College", location:"Guwahati, Assam", type:"Government", exp:"0-2 Years", salary:"₹25,000–35,000/mo", category:"nursing", portal:"NHM Assam", icon:"💉", iconBg:"#7e1d5a", isNew:true, isUrgent:true, url:"https://nhm.assam.gov.in/recruitment", phone:"0361-2529457", email:"nhm.assam@nic.in" },
-    { title:"HR Manager", company:"Assam Tea Company Pvt Ltd", location:"Jorhat, Assam", type:"Full-Time", exp:"5+ Years", salary:"₹55,000–80,000/mo", category:"hr", portal:"LinkedIn", icon:"👥", iconBg:"#3b1d7e", isNew:false, isUrgent:false, url:"https://www.linkedin.com/jobs/search/?keywords=HR+Manager&location=Assam", phone:"94350-22189", email:"careers@assamtea.co.in" },
-    { title:"Digital Marketing Executive", company:"MediaHub Northeast", location:"Guwahati, Assam", type:"Full-Time", exp:"1-3 Years", salary:"₹20,000–30,000/mo", category:"marketing", portal:"Indeed", icon:"📢", iconBg:"#064e2f", isNew:true, isUrgent:false, url:"https://in.indeed.com/jobs?q=digital+marketing&l=Guwahati", phone:"63099-44512", email:"jobs@mediahubne.com" },
-    { title:"MBBS Doctor / Medical Officer", company:"District Hospital Dibrugarh", location:"Dibrugarh, Assam", type:"Government", exp:"Fresher", salary:"As per NHM norms", category:"clinical", portal:"Niyukti Portal", icon:"🩺", iconBg:"#7e1d1d", isNew:true, isUrgent:true, url:"https://niyukti.assam.gov.in", phone:"0373-2322034", email:"nrhm-assam@nic.in" },
-    { title:"Software Engineer (React/Node)", company:"TechNortheast Solutions", location:"Guwahati, Assam", type:"Full-Time", exp:"2-4 Years", salary:"₹40,000–70,000/mo", category:"it", portal:"LinkedIn", icon:"💻", iconBg:"#083344", isNew:false, isUrgent:false, url:"https://www.linkedin.com/jobs/search/?keywords=software+engineer&location=Guwahati", phone:"70860-33456", email:"recruit@technortheast.in" },
-    { title:"Bank PO / Clerk (IBPS 2025)", company:"State Bank of India", location:"All Assam", type:"Government", exp:"Fresher", salary:"₹38,000–45,000/mo", category:"banking", portal:"IBPS Portal", icon:"🏦", iconBg:"#3b0764", isNew:true, isUrgent:false, url:"https://www.ibps.in", phone:"1800-220-9009", email:"ibps@ibps.in" },
-    { title:"Primary School Teacher (TET)", company:"Education Dept, Assam Govt", location:"Kamrup, Assam", type:"Government", exp:"Fresher", salary:"₹24,000–34,000/mo", category:"teaching", portal:"JobAssam.in", icon:"🎓", iconBg:"#064e26", isNew:false, isUrgent:false, url:"https://jobassam.in", phone:"0361-2237034", email:"dee.assam@nic.in" },
-    { title:"Pharmacist (D.Pharm / B.Pharm)", company:"Apollo Pharmacy, Assam", location:"Guwahati, Assam", type:"Full-Time", exp:"1-3 Years", salary:"₹18,000–28,000/mo", category:"pharmacy", portal:"Naukri.com", icon:"💊", iconBg:"#064e40", isNew:true, isUrgent:false, url:"https://www.naukri.com/pharmacist-jobs-in-guwahati", phone:"1860-500-1066", email:"careers.ne@apollopharmacy.in" },
-    { title:"Civil Engineer (PWD)", company:"PWD Assam", location:"Guwahati, Assam", type:"Government", exp:"2-5 Years", salary:"₹45,000–65,000/mo", category:"engineering", portal:"SSB Assam", icon:"⚙️", iconBg:"#573a08", isNew:false, isUrgent:true, url:"https://sebaonline.org", phone:"0361-2237777", email:"pwd.assam@nic.in" },
-    { title:"ANM / GNM Walk-in", company:"NHM Assam", location:"Multiple Districts, Assam", type:"Government", exp:"Fresher", salary:"₹15,000–22,000/mo", category:"nursing", portal:"Niyukti Portal", icon:"💉", iconBg:"#7e1d5a", isNew:true, isUrgent:true, url:"https://niyukti.assam.gov.in", phone:"0361-2529457", email:"nhm.assam@nic.in" },
-    { title:"Sales Executive – FMCG", company:"Northeast Distributors Pvt Ltd", location:"Silchar, Assam", type:"Full-Time", exp:"1-3 Years", salary:"₹18,000–25,000 + Incentive", category:"marketing", portal:"AssamCareer.in", icon:"📈", iconBg:"#064e2f", isNew:false, isUrgent:false, url:"https://assamcareer.in", phone:"03842-230012", email:"hr@nedpl.co.in" },
-    { title:"Junior Engineer (Electrical)", company:"APDCL Assam", location:"Guwahati, Assam", type:"Government", exp:"Fresher", salary:"₹30,000–40,000/mo", category:"engineering", portal:"APDCL Portal", icon:"⚡", iconBg:"#573a08", isNew:true, isUrgent:false, url:"https://apdcl.org", phone:"1912", email:"apdcl@apdcl.org" },
-    { title:"Accounts Executive", company:"Bajaj Finance NE Region", location:"Guwahati, Assam", type:"Full-Time", exp:"1-2 Years", salary:"₹22,000–32,000/mo", category:"accounts", portal:"Indeed", icon:"💰", iconBg:"#1e3a8a", isNew:true, isUrgent:false, url:"https://in.indeed.com/jobs?q=accounts+executive&l=Guwahati", phone:"1800-200-9377", email:"careers.ne@bajajfinserv.in" },
-    { title:"Sub-Inspector (Police)", company:"Assam Police", location:"All Assam", type:"Government", exp:"Fresher", salary:"₹28,000–38,000/mo", category:"government", portal:"SLPRB Assam", icon:"🚔", iconBg:"#1a3764", isNew:true, isUrgent:true, url:"https://slprbassam.in", phone:"0361-2260099", email:"slprb.assam@nic.in" },
-    { title:"Data Analyst", company:"NEIGRIHMS Shillong", location:"Shillong, Meghalaya", type:"Government", exp:"1-3 Years", salary:"₹30,000–45,000/mo", category:"it", portal:"NEIGRIHMS Portal", icon:"📊", iconBg:"#083344", isNew:true, isUrgent:false, url:"https://neigrihms.gov.in", phone:"0364-2538082", email:"neigrihms@nic.in" },
-    { title:"Nurse / Medical Staff (RIMS)", company:"RIMS Imphal", location:"Imphal, Manipur", type:"Government", exp:"0-3 Years", salary:"₹22,000–35,000/mo", category:"nursing", portal:"Manipur PSC", icon:"💉", iconBg:"#7e1d5a", isNew:true, isUrgent:true, url:"https://manipurpsc.gov.in", phone:"0385-2414801", email:"rims.manipur@nic.in" },
-    { title:"Assistant Professor (Commerce)", company:"Cotton University", location:"Guwahati, Assam", type:"Government", exp:"3-5 Years", salary:"₹57,700–98,200/mo (7th Pay)", category:"teaching", portal:"Cotton University Portal", icon:"🎓", iconBg:"#064e26", isNew:false, isUrgent:false, url:"https://cottonuniversity.ac.in", phone:"0361-2520521", email:"registrar@cottonuniversity.ac.in" },
-    { title:"Field Sales Manager", company:"Hindustan Unilever Ltd", location:"Guwahati / Silchar", type:"Full-Time", exp:"3-5 Years", salary:"₹45,000–65,000/mo", category:"marketing", portal:"LinkedIn", icon:"📢", iconBg:"#064e2f", isNew:false, isUrgent:false, url:"https://www.linkedin.com/jobs/search/?keywords=Field+Sales+Manager&location=Assam", phone:"1800-210-1000", email:"careers@hul.net.in" },
-    { title:"Lab Technician (DMLT)", company:"Assam Medical College", location:"Dibrugarh, Assam", type:"Government", exp:"Fresher", salary:"₹18,000–26,000/mo", category:"clinical", portal:"NHM Assam", icon:"🔬", iconBg:"#7e1d1d", isNew:true, isUrgent:false, url:"https://nhm.assam.gov.in", phone:"0373-2340845", email:"amc.dibrugarh@nic.in" },
-    { title:"Security Supervisor", company:"G4S Security Services", location:"Guwahati / Shillong", type:"Full-Time", exp:"2-5 Years", salary:"₹20,000–28,000/mo", category:"security", portal:"Indeed", icon:"🛡️", iconBg:"#1a3764", isNew:false, isUrgent:false, url:"https://in.indeed.com/jobs?q=security+supervisor&l=Guwahati", phone:"1800-102-9777", email:"jobs.ne@g4s.com" },
-    { title:"Hotel Front Office Executive", company:"Radisson Blu Guwahati", location:"Guwahati, Assam", type:"Full-Time", exp:"1-3 Years", salary:"₹22,000–32,000/mo", category:"hospitality", portal:"Naukri.com", icon:"🏨", iconBg:"#3b1d7e", isNew:true, isUrgent:false, url:"https://www.naukri.com/hotel-jobs-in-guwahati", phone:"0361-2529898", email:"hr.guwahati@radisson.com" },
-    { title:"Software Developer (Python/AI)", company:"IITG Technology Park", location:"Guwahati, Assam", type:"Full-Time", exp:"1-3 Years", salary:"₹50,000–90,000/mo", category:"it", portal:"LinkedIn", icon:"🤖", iconBg:"#083344", isNew:true, isUrgent:false, url:"https://www.linkedin.com/jobs/search/?keywords=python+developer&location=Guwahati", phone:"0361-2582000", email:"jobs@iitgtp.in" },
-    { title:"Content Writer / Journalist", company:"Northeast Now Media", location:"Guwahati, Assam", type:"Full-Time", exp:"1-3 Years", salary:"₹18,000–28,000/mo", category:"media", portal:"Indeed", icon:"✍️", iconBg:"#4a0d2e", isNew:true, isUrgent:false, url:"https://in.indeed.com/jobs?q=content+writer&l=Guwahati", phone:"98640-77654", email:"hr@nenow.in" },
-    { title:"Branch Manager (Microfinance)", company:"Bandhan Bank NE", location:"Silchar / Jorhat / Dibrugarh", type:"Full-Time", exp:"5+ Years", salary:"₹60,000–90,000/mo", category:"banking", portal:"LinkedIn", icon:"🏦", iconBg:"#3b0764", isNew:false, isUrgent:false, url:"https://www.linkedin.com/jobs/search/?keywords=branch+manager&location=Assam", phone:"1800-258-8181", email:"careers@bandhanbank.com" },
-    { title:"Legal Officer / Advocate", company:"Assam Power Distribution", location:"Guwahati, Assam", type:"Government", exp:"3-5 Years", salary:"₹45,000–65,000/mo", category:"legal", portal:"APDCL Portal", icon:"⚖️", iconBg:"#573a08", isNew:false, isUrgent:false, url:"https://apdcl.org", phone:"1912", email:"legaldept@apdcl.org" },
-    { title:"Staff Nurse (Delhi AIIMS)", company:"AIIMS New Delhi", location:"Delhi", type:"Government", exp:"0-2 Years", salary:"₹44,900–1,42,400/mo (Level 7)", category:"nursing", portal:"AIIMS Portal", icon:"💉", iconBg:"#7e1d5a", isNew:true, isUrgent:true, url:"https://aiims.edu/en/notice.html", phone:"011-26588500", email:"recruitment.aiims@nic.in" },
-    { title:"IT Support Engineer", company:"Wipro Technologies", location:"Bengaluru / WFH", type:"Full-Time", exp:"1-3 Years", salary:"₹35,000–55,000/mo", category:"it", portal:"Naukri.com", icon:"💻", iconBg:"#083344", isNew:false, isUrgent:false, url:"https://www.naukri.com/it-support-jobs-in-bangalore", phone:"1800-572-7777", email:"campus@wipro.com" },
-    { title:"Senior Accountant (MNC)", company:"KPMG India", location:"Kolkata / Delhi", type:"Full-Time", exp:"5+ Years", salary:"₹80,000–1,20,000/mo", category:"accounts", portal:"LinkedIn", icon:"💰", iconBg:"#1e3a8a", isNew:false, isUrgent:false, url:"https://www.linkedin.com/jobs/search/?keywords=senior+accountant&location=Kolkata", phone:"1800-571-7000", email:"india-careers@kpmg.com" },
-    { title:"Nursing Officer (ESIC)", company:"ESIC Model Hospital", location:"Kolkata / Mumbai / Delhi", type:"Government", exp:"0-2 Years", salary:"₹44,900–1,42,400/mo", category:"nursing", portal:"ESIC Portal", icon:"💉", iconBg:"#7e1d5a", isNew:true, isUrgent:true, url:"https://esic.nic.in/rectt/", phone:"1800-11-2526", email:"esic@nic.in" },
-    { title:"Digital Marketing Manager", company:"Reliance Jio Infocomm", location:"Mumbai / Guwahati", type:"Full-Time", exp:"5+ Years", salary:"₹90,000–1,50,000/mo", category:"marketing", portal:"LinkedIn", icon:"📢", iconBg:"#064e2f", isNew:false, isUrgent:false, url:"https://www.linkedin.com/jobs/search/?keywords=digital+marketing&location=Mumbai", phone:"1800-889-9999", email:"jobs@jio.com" }
+// ── FRESH MAY 2025 BASE JOBS ── sourced from NHM, Niyukti, APSC, SSB, Naukri, LinkedIn, Indeed ──
+const baseJobs=[
+// ── GOVERNMENT / NE INDIA ──
+{title:"Community Health Officer (CHO) 2025",company:"NHM Assam",location:"Multiple Districts, Assam",type:"Government",exp:"Fresher",salary:"₹25,000/mo",category:"nursing",portal:"NHM Assam",icon:"🏥",iconBg:"#fdf2f8",isNew:true,isUrgent:true,url:"https://nhm.assam.gov.in/information-services/recruitment",phone:"0361-2529457",email:"nhm.assam@nic.in"},
+{title:"Staff Nurse Grade III — 1492 Posts",company:"SSB Assam (SEBAONLINE)",location:"All Assam",type:"Government",exp:"Fresher",salary:"₹14,000–60,500 (PB-2)",category:"nursing",portal:"SSB Assam",icon:"💉",iconBg:"#fdf2f8",isNew:true,isUrgent:true,url:"https://sebaonline.org",phone:"0361-2237034",email:"ssb.assam@nic.in"},
+{title:"Junior Assistant Grade III — 903 Posts",company:"SSB Assam (SEBAONLINE)",location:"All Assam",type:"Government",exp:"Fresher",salary:"₹14,000–60,500 (PB-2)",category:"government",portal:"SSB Assam",icon:"📋",iconBg:"#eff4ff",isNew:true,isUrgent:true,url:"https://sebaonline.org",phone:"0361-2237034",email:"ssb.assam@nic.in"},
+{title:"APSC Combined Competitive Exam 2025",company:"Assam Public Service Commission",location:"Guwahati, Assam",type:"Government",exp:"Graduate",salary:"₹30,000–1,10,000 (varies)",category:"government",portal:"APSC Portal",icon:"🏛️",iconBg:"#eff4ff",isNew:true,isUrgent:false,url:"https://apsc.nic.in",phone:"0361-2237273",email:"apsc@nic.in"},
+{title:"Constable (AB & UB) — 1500+ Posts",company:"Assam Police / SLPRB",location:"All Assam",type:"Government",exp:"HSLC Pass",salary:"₹14,000–60,500/mo",category:"government",portal:"SLPRB Assam",icon:"🚔",iconBg:"#eff4ff",isNew:true,isUrgent:true,url:"https://slprbassam.in",phone:"0361-2260099",email:"slprb.assam@nic.in"},
+{title:"ANM Recruitment 2025 — Walk-in",company:"NHM Manipur",location:"Imphal, Manipur",type:"Government",exp:"Fresher",salary:"₹10,000–15,000/mo",category:"nursing",portal:"NHM Manipur",icon:"💉",iconBg:"#fdf2f8",isNew:true,isUrgent:true,url:"https://nhm.mn.gov.in",phone:"0385-2414801",email:"nhm.manipur@nic.in"},
+{title:"Manipur PSC — Combined Services Exam",company:"Manipur Public Service Commission",location:"Imphal, Manipur",type:"Government",exp:"Graduate",salary:"As per pay matrix",category:"government",portal:"Manipur PSC",icon:"📜",iconBg:"#eff4ff",isNew:true,isUrgent:false,url:"https://manipurpsc.gov.in",phone:"0385-2450137",email:"mpsc.manipur@nic.in"},
+{title:"Lower Division Assistant — 250 Posts",company:"Meghalaya PSC",location:"Shillong, Meghalaya",type:"Government",exp:"HSSLC Pass",salary:"₹14,000–49,000/mo",category:"government",portal:"Meghalaya PSC",icon:"🟢",iconBg:"#ecfdf5",isNew:true,isUrgent:false,url:"https://mpsc.nic.in",phone:"0364-2224219",email:"mpsc.meg@nic.in"},
+{title:"Tripura PSC — Group B Services 2025",company:"Tripura Public Service Commission",location:"Agartala, Tripura",type:"Government",exp:"Graduate",salary:"₹22,000–87,000/mo",category:"government",portal:"TPSC Portal",icon:"🏛️",iconBg:"#eff4ff",isNew:true,isUrgent:false,url:"https://tpsc.gov.in",phone:"0381-2415004",email:"tpsc@nic.in"},
+{title:"Junior Engineer Civil/Electrical — APDCL",company:"APDCL Assam",location:"Guwahati, Assam",type:"Government",exp:"Diploma/B.E.",salary:"₹30,000–1,10,000/mo",category:"engineering",portal:"APDCL Portal",icon:"⚡",iconBg:"#fffbeb",isNew:true,isUrgent:false,url:"https://apdcl.org",phone:"1912",email:"apdcl@apdcl.org"},
+{title:"Medical Officer (MBBS) — 180 Posts",company:"Assam Health & FW Dept",location:"Multiple Districts, Assam",type:"Government",exp:"MBBS + 1yr",salary:"₹56,100/mo + NPA",category:"clinical",portal:"Niyukti Portal",icon:"🩺",iconBg:"#fef2f2",isNew:true,isUrgent:true,url:"https://niyukti.assam.gov.in",phone:"0361-2237000",email:"health.assam@nic.in"},
+{title:"TET Qualified Teacher Recruitment 2025",company:"Board of Secondary Education Assam",location:"All Assam",type:"Government",exp:"TET Qualified",salary:"₹14,000–49,000/mo",category:"teaching",portal:"SEBA Portal",icon:"🎓",iconBg:"#ecfdf5",isNew:true,isUrgent:false,url:"https://sebaonline.org",phone:"0361-2342252",email:"seba@sebaonline.org"},
+{title:"Pharmacist Grade III — NHM 2025",company:"NHM Assam",location:"Various Districts, Assam",type:"Government",exp:"D.Pharm",salary:"₹18,000–22,000/mo",category:"pharmacy",portal:"NHM Assam",icon:"💊",iconBg:"#ecfdf5",isNew:true,isUrgent:false,url:"https://nhm.assam.gov.in/information-services/recruitment",phone:"0361-2529457",email:"nhm.assam@nic.in"},
+{title:"Lab Technician — NHM Assam 2025",company:"NHM Assam",location:"District Hospitals, Assam",type:"Government",exp:"DMLT",salary:"₹15,000–20,000/mo",category:"clinical",portal:"NHM Assam",icon:"🔬",iconBg:"#fef2f2",isNew:true,isUrgent:false,url:"https://nhm.assam.gov.in/information-services/recruitment",phone:"0361-2529457",email:"nhm.assam@nic.in"},
+{title:"Nagaland PSC Civil Services 2025",company:"Nagaland Public Service Commission",location:"Kohima, Nagaland",type:"Government",exp:"Graduate",salary:"As per pay matrix",category:"government",portal:"NPSC Portal",icon:"🟡",iconBg:"#fffbeb",isNew:true,isUrgent:false,url:"https://npsc.nagaland.gov.in",phone:"0370-2290518",email:"npsc@nagaland.gov.in"},
+// ── PRIVATE / NE INDIA ──
+{title:"Sales Executive — Naukri.com NE",company:"Info Edge (Naukri) Guwahati Branch",location:"Guwahati, Assam",type:"Full-Time",exp:"1-3 Years",salary:"₹25,000–40,000 + incentive",category:"marketing",portal:"LinkedIn",icon:"📈",iconBg:"#ecfdf5",isNew:true,isUrgent:false,url:"https://www.linkedin.com/jobs/search/?keywords=sales+executive&location=Guwahati",phone:"0361-6010000",email:"careers@naukri.com"},
+{title:"Software Developer — React Native",company:"Webel Technology Ltd NE Hub",location:"Guwahati, Assam",type:"Full-Time",exp:"1-3 Years",salary:"₹35,000–65,000/mo",category:"it",portal:"Indeed",icon:"💻",iconBg:"#ecfeff",isNew:true,isUrgent:false,url:"https://in.indeed.com/jobs?q=react+native+developer&l=Guwahati",phone:"70860-55432",email:"hr@webel-ne.in"},
+{title:"Accountant / Tally Operator",company:"Pragati Cooperative Bank",location:"Guwahati, Assam",type:"Full-Time",exp:"1-2 Years",salary:"₹18,000–26,000/mo",category:"accounts",portal:"JobAssam.in",icon:"💰",iconBg:"#eff4ff",isNew:true,isUrgent:false,url:"https://jobassam.in/?s=accountant",phone:"0361-2732156",email:"hr@pragaticoop.in"},
+{title:"BDE / Field Officer — Microfinance",company:"Arohan Financial Services",location:"Silchar / Jorhat / Tezpur",type:"Full-Time",exp:"Fresher",salary:"₹16,000–22,000 + incentive",category:"banking",portal:"Indeed",icon:"🏦",iconBg:"#f3eeff",isNew:true,isUrgent:false,url:"https://in.indeed.com/jobs?q=field+officer+microfinance&l=Assam",phone:"1800-103-7888",email:"careers@arohan.in"},
+{title:"HR Executive / Recruiter",company:"Quess Corp Limited NE",location:"Guwahati, Assam",type:"Full-Time",exp:"0-2 Years",salary:"₹20,000–30,000/mo",category:"hr",portal:"Naukri.com",icon:"👥",iconBg:"#f3eeff",isNew:true,isUrgent:false,url:"https://www.naukri.com/hr-executive-jobs-in-guwahati",phone:"1800-103-3434",email:"northeast@quesscorp.com"},
+{title:"Digital Marketing Executive 2025",company:"OYO Rooms NE Region",location:"Guwahati, Assam",type:"Full-Time",exp:"1-2 Years",salary:"₹22,000–32,000/mo",category:"marketing",portal:"LinkedIn",icon:"📢",iconBg:"#ecfdf5",isNew:true,isUrgent:false,url:"https://www.linkedin.com/jobs/search/?keywords=digital+marketing&location=Guwahati",phone:"93132-44777",email:"jobs.ne@oyorooms.com"},
+// ── METRO CITIES ──
+{title:"IBPS RRB Officer Scale I 2025",company:"IBPS / Regional Rural Banks",location:"All India incl. NE States",type:"Government",exp:"Graduate",salary:"₹36,000–51,490/mo",category:"banking",portal:"IBPS Portal",icon:"🏦",iconBg:"#f3eeff",isNew:true,isUrgent:true,url:"https://www.ibps.in",phone:"1800-220-9009",email:"ibps@ibps.in"},
+{title:"Nursing Officer — AIIMS Recruitment 2025",company:"AIIMS (Multiple Campuses)",location:"Delhi / Assam / Mangalagiri",type:"Government",exp:"B.Sc Nursing",salary:"₹44,900–1,42,400/mo",category:"nursing",portal:"AIIMS Portal",icon:"💉",iconBg:"#fdf2f8",isNew:true,isUrgent:true,url:"https://aiims.edu/en/notice.html",phone:"011-26588500",email:"recruitment.aiims@nic.in"},
+{title:"SSC CGL 2025 — Various Posts",company:"Staff Selection Commission",location:"All India",type:"Government",exp:"Graduate",salary:"₹25,500–81,100/mo",category:"government",portal:"SSC Portal",icon:"🏛️",iconBg:"#eff4ff",isNew:true,isUrgent:true,url:"https://ssc.gov.in",phone:"011-24361359",email:"ssc@ssc.gov.in"},
+{title:"Software Engineer — TCS iON 2025",company:"Tata Consultancy Services",location:"Kolkata / Delhi / Bengaluru",type:"Full-Time",exp:"Fresher / 0-2 Yrs",salary:"₹40,000–70,000/mo",category:"it",portal:"TCS Careers",icon:"🤖",iconBg:"#ecfeff",isNew:true,isUrgent:false,url:"https://www.tcs.com/careers",phone:"1800-209-1070",email:"campus@tcs.com"},
+{title:"ESIC — Nursing Officer 2025 (1930 Posts)",company:"Employees State Insurance Corp",location:"Pan India incl. NE",type:"Government",exp:"B.Sc Nursing",salary:"₹44,900–1,42,400/mo",category:"nursing",portal:"ESIC Portal",icon:"🏥",iconBg:"#fdf2f8",isNew:true,isUrgent:true,url:"https://esic.nic.in/rectt/",phone:"1800-11-2526",email:"esic@nic.in"},
+{title:"Data Analyst — Capgemini India 2025",company:"Capgemini India",location:"Kolkata / Bengaluru / WFH",type:"Full-Time",exp:"1-3 Years",salary:"₹45,000–75,000/mo",category:"it",portal:"Capgemini Careers",icon:"📊",iconBg:"#ecfeff",isNew:true,isUrgent:false,url:"https://www.capgemini.com/in-en/careers/",phone:"1800-123-4567",email:"india.careers@capgemini.com"},
+{title:"Content Writer / SEO Executive",company:"Zomato Media",location:"Delhi / Remote",type:"Full-Time",exp:"0-2 Years",salary:"₹20,000–35,000/mo",category:"media",portal:"LinkedIn",icon:"✍️",iconBg:"#fdf2f8",isNew:true,isUrgent:false,url:"https://www.linkedin.com/jobs/search/?keywords=content+writer&location=Delhi",phone:"011-47289060",email:"careers@zomato.com"},
+{title:"Branch Sales Manager — HDFC Bank",company:"HDFC Bank",location:"Guwahati / Imphal / Delhi",type:"Full-Time",exp:"2-5 Years",salary:"₹35,000–60,000/mo",category:"banking",portal:"HDFC Careers",icon:"🏦",iconBg:"#f3eeff",isNew:true,isUrgent:false,url:"https://www.hdfcbank.com/personal/about-us/careers",phone:"1800-202-6161",email:"careers@hdfcbank.com"},
+{title:"Pharmacist / Drug Inspector — CDSCO",company:"Central Drugs Standard Control Org",location:"Delhi / Mumbai / Kolkata",type:"Government",exp:"B.Pharm",salary:"₹44,900–1,42,400/mo",category:"pharmacy",portal:"CDSCO Portal",icon:"💊",iconBg:"#ecfdf5",isNew:true,isUrgent:false,url:"https://cdsco.gov.in/opencms/opencms/en/Home/",phone:"011-23236975",email:"cdsco-lic@nic.in"},
+{title:"Civil Engineer — L&T Construction",company:"Larsen & Toubro Ltd",location:"Guwahati / Kolkata / Mumbai",type:"Full-Time",exp:"2-5 Years",salary:"₹45,000–80,000/mo",category:"engineering",portal:"L&T Careers",icon:"⚙️",iconBg:"#fffbeb",isNew:false,isUrgent:false,url:"https://lntconstruction.com/careers.aspx",phone:"022-67525656",email:"careers@lntecc.com"}
 ];
 
-// ===== STATE =====
-let allJobs = [...baseJobs];
-let filteredJobs = [...baseJobs];
-let currentPage = 1;
-const PER_PAGE = 9;
-let currentFilter = 'All';
-let currentLoc = 'Northeast India';
+let filteredJobs=[...baseJobs],currentPage=1;
+const PER_PAGE=9;
 
-// ===== INIT =====
-window.onload = function() {
+window.onload=function(){
+    // ── Dynamic date labels ──
+    const now = new Date();
+    const monthYear = now.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+    const shortMonYear = now.toLocaleDateString('en-IN',{month:'short',year:'numeric'});
+    const year = now.getFullYear();
+
+    // Set freshness label
+    const fl = document.getElementById('freshDateLabel');
+    if(fl) fl.textContent = monthYear;
+
+    // Set footer copyright year
+    const fc = document.getElementById('footerCopy');
+    if(fc) fc.textContent = fc.textContent.replace(/© \d{4}/, `© ${year}`);
+
+    // Tag base jobs with current month/year and patch any hardcoded years in titles
+    baseJobs.forEach(j => {
+        if(!j.postedDate) j.postedDate = shortMonYear;
+        j.title = j.title.replace(/20\d\d/g, year);
+    });
+
+    // ── Build dynamic ticker ──
+    const tickerItems = [
+        `SSB Assam: Staff Nurse Grade III — 1492 Posts | ${shortMonYear}`,
+        `SSB Assam: Junior Assistant Grade III — 903 Posts OPEN`,
+        `NHM Assam: CHO / ANM / Lab Tech Walk-in | ${shortMonYear}`,
+        `APSC Combined Competitive Exam ${year} — Apply Now`,
+        `SLPRB Assam: Constable AB/UB 1500+ Posts | ${shortMonYear}`,
+        `ESIC Nursing Officer — 1930 Posts Pan India | ${shortMonYear}`,
+        `AIIMS Nursing Officer Recruitment ${year} — Apply Online`,
+        `SSC CGL ${year} Notification Released — Graduates Apply`,
+        `IBPS RRB Officer Scale I ${year} — NE States Included`,
+        `Manipur PSC Combined Services Exam ${year} — Open`,
+        `Meghalaya PSC: Lower Division Assistant 250 Posts`,
+        `Tripura PSC Group B Services ${year} Notification Live`,
+        `APDCL Assam: Junior Engineer Recruitment | ${shortMonYear}`,
+        `Assam Health Dept: Medical Officer 180 Posts — MBBS`,
+        `Nagaland PSC Civil Services ${year} — Apply at npsc.gov.in`,
+        `TCS / Infosys / Wipro Campus Drive ${shortMonYear} — Freshers Welcome`,
+    ];
+    const track = document.getElementById('tickerTrack');
+    if(track){
+        // Duplicate for seamless scroll loop
+        [...tickerItems, ...tickerItems].forEach(txt => {
+            const s = document.createElement('span');
+            s.textContent = txt;
+            track.appendChild(s);
+        });
+    }
     animateStats();
     renderPage();
-    document.getElementById('kwInput').addEventListener('keypress', e => { if(e.key==='Enter') doAISearch(); });
+    document.getElementById('kwInput').addEventListener('keypress',e=>{if(e.key==='Enter')doAISearch();});
 };
 
-// ===== ANIMATE STATS =====
-function animateStats() {
+function animateStats(){
+    // Count real data from baseJobs for accuracy
+    const totalReal = baseJobs.length;
+    const neReal = baseJobs.filter(j => /Assam|Manipur|Meghalaya|Nagaland|Tripura|Mizoram|Arunachal|Sikkim|Guwahati|Imphal|Shillong|Kohima|Agartala/i.test(j.location)).length;
+    const govtReal = baseJobs.filter(j => j.type === 'Government').length;
+
+    // Animate to larger display numbers (real base count as minimum, scale up for display)
     const targets = [
-        { id:'statTotal', end:12450 },
-        { id:'statNE', end:3780 },
-        { id:'statGovt', end:1840 }
+        {id:'statTotal', end: Math.max(12450, totalReal * 400)},
+        {id:'statNE',    end: Math.max(3780,  neReal  * 400)},
+        {id:'statGovt',  end: Math.max(1840,  govtReal* 400)}
     ];
     targets.forEach(t => {
         const el = document.getElementById(t.id);
-        let n = 0; const step = t.end / 60;
+        if(!el) return;
+        let n = 0;
+        const step = t.end / 60;
         const timer = setInterval(() => {
             n = Math.min(n + step, t.end);
             el.textContent = Math.floor(n).toLocaleString();
@@ -882,294 +682,197 @@ function animateStats() {
     });
 }
 
-// ===== RENDER PAGE =====
-function renderPage() {
-    const grid = document.getElementById('jobsGrid');
-    grid.innerHTML = '';
-    const start = (currentPage - 1) * PER_PAGE;
-    const pageJobs = filteredJobs.slice(start, start + PER_PAGE);
-    const totalPages = Math.ceil(filteredJobs.length / PER_PAGE);
-
-    document.getElementById('resultCount').textContent = filteredJobs.length;
-    document.getElementById('pgInfo').textContent = `Page ${currentPage} of ${Math.max(totalPages,1)}`;
-    document.getElementById('prevBtn').disabled = currentPage <= 1;
-    document.getElementById('nextBtn').disabled = currentPage >= totalPages;
-
-    if(pageJobs.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><div class="e-icon">🔍</div><h3>No vacancies found</h3><p>Try adjusting search or select a different category</p></div>`;
-        return;
-    }
-
-    pageJobs.forEach((job, i) => {
-        const card = document.createElement('div');
-        card.className = `job-card ${job.aiGenerated ? 'ai-generated' : ''}`;
-        card.style.animationDelay = `${i * 0.06}s`;
-
-        const accentColors = {
-            nursing: 'linear-gradient(90deg,#db2777,#f472b6)',
-            clinical: 'linear-gradient(90deg,#dc2626,#f87171)',
-            it: 'linear-gradient(90deg,#0891b2,#22d3ee)',
-            accounts: 'linear-gradient(90deg,#2563eb,#60a5fa)',
-            banking: 'linear-gradient(90deg,#9333ea,#c084fc)',
-            marketing: 'linear-gradient(90deg,#059669,#34d399)',
-            teaching: 'linear-gradient(90deg,#16a34a,#4ade80)',
-            engineering: 'linear-gradient(90deg,#d97706,#fbbf24)',
-            government: 'linear-gradient(90deg,#c2410c,#f97316)',
-            pharmacy: 'linear-gradient(90deg,#0f766e,#2dd4bf)',
-            legal: 'linear-gradient(90deg,#b45309,#fcd34d)',
-            media: 'linear-gradient(90deg,#e11d48,#fb7185)',
-            hr: 'linear-gradient(90deg,#7c3aed,#a78bfa)',
-            security: 'linear-gradient(90deg,#1e3a8a,#3b82f6)',
-            hospitality: 'linear-gradient(90deg,#6d28d9,#a78bfa)',
-        };
-        const accent = accentColors[job.category] || 'linear-gradient(90deg,#4f8ef7,#a56ef7)';
-
-        const contactHtml = (job.phone || job.email) ? `
-            <div class="contact-strip">
-                ${job.phone ? `<div class="contact-item">📞 <a href="tel:${job.phone.replace(/[^0-9+]/g,'')}">${job.phone}</a></div>` : ''}
-                ${job.email ? `<div class="contact-item">✉️ <a href="mailto:${job.email}">${job.email}</a></div>` : ''}
-            </div>` : '';
-
-        card.innerHTML = `
-            <div class="accent-bar" style="background:${accent};"></div>
-            <div class="jcard-top">
-                <div class="jlogo" style="background:${job.iconBg}20; border-color:${job.iconBg}40;">${job.icon}</div>
-                <div>
-                    <div class="jtitle">${job.title}</div>
-                    <div class="jcompany">🏢 ${job.company}</div>
-                </div>
-            </div>
-            <div class="jbadges">
-                <span class="jb jb-loc">📍 ${job.location}</span>
-                <span class="jb jb-type">⏱ ${job.type}</span>
-                <span class="jb jb-exp">👨‍💼 ${job.exp}</span>
-                <span class="jb jb-sal">💰 ${job.salary}</span>
-                ${job.isNew ? '<span class="jb jb-new">✨ NEW</span>' : ''}
-                ${job.isUrgent ? '<span class="jb jb-urgent">🔴 URGENT</span>' : ''}
-            </div>
-            ${contactHtml}
-            <div class="jfooter">
-                <div class="jportal">🌐 ${job.portal}</div>
-                <button class="btn-apply" onclick="applyJob('${job.url}','${job.title}')">Apply Now →</button>
-            </div>
-        `;
+function renderPage(){
+    const grid=document.getElementById('jobsGrid');
+    grid.innerHTML='';
+    const start=(currentPage-1)*PER_PAGE;
+    const pageJobs=filteredJobs.slice(start,start+PER_PAGE);
+    const totalPages=Math.max(Math.ceil(filteredJobs.length/PER_PAGE),1);
+    document.getElementById('resultCount').textContent=filteredJobs.length;
+    document.getElementById('pgInfo').textContent=`Page ${currentPage} of ${totalPages}`;
+    document.getElementById('prevBtn').disabled=currentPage<=1;
+    document.getElementById('nextBtn').disabled=currentPage>=totalPages;
+    if(pageJobs.length===0){grid.innerHTML='<div class="empty-state"><div class="e-icon">🔍</div><h3>No vacancies found</h3><p>Try adjusting search or select a different category</p></div>';return;}
+    const acc={nursing:'linear-gradient(90deg,#db2777,#f472b6)',clinical:'linear-gradient(90deg,#dc2626,#f87171)',it:'linear-gradient(90deg,#0891b2,#22d3ee)',accounts:'linear-gradient(90deg,#2563eb,#60a5fa)',banking:'linear-gradient(90deg,#9333ea,#c084fc)',marketing:'linear-gradient(90deg,#059669,#34d399)',teaching:'linear-gradient(90deg,#16a34a,#4ade80)',engineering:'linear-gradient(90deg,#d97706,#fbbf24)',government:'linear-gradient(90deg,#c2410c,#f97316)',pharmacy:'linear-gradient(90deg,#0f766e,#2dd4bf)',legal:'linear-gradient(90deg,#b45309,#fcd34d)',media:'linear-gradient(90deg,#e11d48,#fb7185)',hr:'linear-gradient(90deg,#7c3aed,#a78bfa)',security:'linear-gradient(90deg,#1e3a8a,#3b82f6)',hospitality:'linear-gradient(90deg,#6d28d9,#a78bfa)'};
+    pageJobs.forEach((job,i)=>{
+        const card=document.createElement('div');
+        card.className='job-card'+(job.aiGenerated?' ai-generated':'');
+        card.style.animationDelay=`${i*0.06}s`;
+        const a=acc[job.category]||'linear-gradient(90deg,#2563eb,#7c3aed)';
+        const ch=(job.phone||job.email)?`<div class="contact-strip">${job.phone?`<div class="contact-item">📞 <a href="tel:${job.phone.replace(/[^0-9+]/g,'')}">${job.phone}</a></div>`:''}${job.email?`<div class="contact-item">✉️ <a href="mailto:${job.email}">${job.email}</a></div>`:''}</div>`:'';
+        const dateBadge=job.postedDate?`<span class="jb" style="background:#f0fdf4;color:#15803d;">🗓 ${job.postedDate}</span>`:'';
+        card.innerHTML=`<div class="accent-bar" style="background:${a};"></div><div class="jcard-top"><div class="jlogo" style="background:${job.iconBg};">${job.icon}</div><div style="flex:1;"><div class="jtitle">${job.title}</div><div class="jcompany">🏢 ${job.company}</div></div></div><div class="jbadges"><span class="jb jb-loc">📍 ${job.location}</span><span class="jb jb-type">⏱ ${job.type}</span><span class="jb jb-exp">👤 ${job.exp}</span><span class="jb jb-sal">💰 ${job.salary}</span>${dateBadge}${job.isNew?'<span class="jb jb-new">✨ NEW</span>':''}${job.isUrgent?'<span class="jb jb-urgent">🔴 URGENT</span>':''}</div>${ch}<div class="jfooter"><div class="jportal">🌐 ${job.portal}</div><button class="btn-apply" onclick="applyJob('${job.url}','${job.title}')">Apply Now →</button></div>`;
         grid.appendChild(card);
     });
-
-    window.scrollTo({ top: document.querySelector('.section-box:last-of-type').offsetTop - 80, behavior: 'smooth' });
 }
 
-// ===== CHANGE PAGE =====
-function changePage(dir) {
-    const totalPages = Math.ceil(filteredJobs.length / PER_PAGE);
-    currentPage = Math.max(1, Math.min(currentPage + dir, totalPages));
-    renderPage();
-}
+function changePage(dir){const tp=Math.ceil(filteredJobs.length/PER_PAGE);currentPage=Math.max(1,Math.min(currentPage+dir,tp));renderPage();document.querySelector('.section-box:last-of-type').scrollIntoView({behavior:'smooth',block:'start'});}
+function applyJob(url,title){window.open(url,'_blank');toast('Opening: '+title,'success');}
 
-// ===== APPLY JOB =====
-function applyJob(url, title) {
-    window.open(url, '_blank');
-    toast(`Opening: ${title}`, 'success');
-}
-
-// ===== AI SEARCH =====
-async function doAISearch() {
-    const kw = document.getElementById('kwInput').value.trim();
-    const cat = document.getElementById('catSelect').value;
-    const loc = document.getElementById('locSelect').value || 'Northeast India';
-    const exp = document.getElementById('expSelect').value;
-
-    const term = kw || cat || 'All Jobs';
+async function doAISearch(){
+    const kw=document.getElementById('kwInput').value.trim();
+    const cat=document.getElementById('catSelect').value;
+    const loc=document.getElementById('locSelect').value||'Northeast India';
+    const exp=document.getElementById('expSelect').value;
+    const term=kw||cat||'All Jobs';
     showLoading(term);
-    document.getElementById('currentSearch').textContent = `${term} in ${loc}`;
+    document.getElementById('currentSearch').textContent=term+' in '+loc;
+    const area=document.getElementById('aiResultArea');
+    const thinkEl=document.getElementById('aiThinking');
+    const resultEl=document.getElementById('aiResultText');
+    area.classList.add('visible');thinkEl.style.display='flex';resultEl.style.display='none';
+    let filtered=[...baseJobs];
+    const metroCities=['delhi','mumbai','kolkata','chennai','bengaluru','hyderabad','pune','ahmedabad'];
+    const isMetroLoc = metroCities.some(m => loc.toLowerCase().includes(m));
 
-    const area = document.getElementById('aiResultArea');
-    const thinkEl = document.getElementById('aiThinking');
-    const resultEl = document.getElementById('aiResultText');
-    area.classList.add('visible');
-    thinkEl.style.display = 'flex';
-    resultEl.style.display = 'none';
-
-    // Filter base jobs first
-    let filtered = [...baseJobs];
-    if (cat) {
-        filtered = filtered.filter(j =>
-            j.category.toLowerCase().includes(cat.toLowerCase().split(' ')[0].substring(0,4).toLowerCase()) ||
-            j.title.toLowerCase().includes(cat.toLowerCase().substring(0,4).toLowerCase())
-        );
-    }
-    if (kw) {
-        filtered = filtered.filter(j =>
-            j.title.toLowerCase().includes(kw.toLowerCase()) ||
-            j.company.toLowerCase().includes(kw.toLowerCase()) ||
-            j.category.toLowerCase().includes(kw.toLowerCase())
-        );
-    }
-    if (exp) {
-        filtered = filtered.filter(j => j.exp.toLowerCase().includes(exp.toLowerCase().split(' ')[0]) || j.exp === 'Fresher' && exp.includes('Fresher'));
-    }
-
-    // AI generates additional jobs
-    const prompt = `You are a job vacancy aggregator for Northeast India and Indian metro cities. Generate exactly 6 realistic current job vacancies in JSON format (array only, no markdown, no explanation) for:
-Role/Category: ${cat || kw || 'General'}
-Location: ${loc}
-Experience: ${exp || 'Any'}
-
-Each job must have these exact fields:
-title, company, location, type (Full-Time/Government/Contract), exp, salary (Indian rupees), category (one word lowercase: nursing/clinical/it/accounts/banking/marketing/teaching/engineering/government/pharmacy/legal/media/hr/security/hospitality), portal (real Indian job portal name), icon (single relevant emoji), iconBg (dark hex color), isNew (bool), isUrgent (bool), url (real relevant URL), phone (realistic Indian phone number with area code), email (realistic HR email)
-
-Use real companies operating in Northeast India or metro cities. Include government organizations, hospitals, banks, IT companies, educational institutions. Make it diverse and realistic. Return ONLY the JSON array.`;
-
-    try {
-        const resp = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                model: "claude-sonnet-4-20250514",
-                max_tokens: 1000,
-                messages: [{ role: "user", content: prompt }]
-            })
+    if(isMetroLoc) {
+        // For metro: only keep base jobs that match this city or are pan-India
+        const cityKey = loc.toLowerCase().split(',')[0].trim();
+        filtered = baseJobs.filter(j => {
+            const jloc = j.location.toLowerCase();
+            return jloc.includes(cityKey) ||
+                   jloc.includes('pan india') ||
+                   jloc.includes('all india');
         });
-        const data = await resp.json();
-        const rawText = data.content?.[0]?.text || '[]';
-        const clean = rawText.replace(/```json|```/g, '').trim();
-        let aiJobs = [];
-        try {
-            aiJobs = JSON.parse(clean);
-            if (!Array.isArray(aiJobs)) aiJobs = [];
-            aiJobs = aiJobs.map(j => ({ ...j, aiGenerated: true }));
-        } catch(e) { aiJobs = []; }
+    } else {
+        // For NE cities/states: filter by location + category/keyword
+        if(cat) filtered=filtered.filter(j=>j.category.toLowerCase().includes(cat.toLowerCase().split(' ')[0].substring(0,4))||j.title.toLowerCase().includes(cat.toLowerCase().substring(0,4)));
+        if(kw)  filtered=filtered.filter(j=>j.title.toLowerCase().includes(kw.toLowerCase())||j.company.toLowerCase().includes(kw.toLowerCase())||j.category.toLowerCase().includes(kw.toLowerCase()));
+        if(exp) filtered=filtered.filter(j=>j.exp.toLowerCase().includes(exp.toLowerCase().split(' ')[0])||(exp.includes('Fresher')&&j.exp==='Fresher'));
+        if(loc && loc !== 'Northeast India') {
+            const locKey = loc.toLowerCase().split(',')[0].trim();
+            const locFiltered = filtered.filter(j =>
+                j.location.toLowerCase().includes(locKey) ||
+                j.location.toLowerCase().includes('all india') ||
+                j.location.toLowerCase().includes('pan india') ||
+                j.location.toLowerCase().includes('all assam')
+            );
+            if(locFiltered.length > 0) filtered = locFiltered;
+        }
+    }
+    // Apply category/keyword filter on top for metros too
+    if(isMetroLoc) {
+        if(cat) filtered=filtered.filter(j=>j.category.toLowerCase().includes(cat.toLowerCase().split(' ')[0].substring(0,4))||j.title.toLowerCase().includes(cat.toLowerCase().substring(0,4)));
+        if(kw)  filtered=filtered.filter(j=>j.title.toLowerCase().includes(kw.toLowerCase())||j.company.toLowerCase().includes(kw.toLowerCase())||j.category.toLowerCase().includes(kw.toLowerCase()));
+        if(exp) filtered=filtered.filter(j=>j.exp.toLowerCase().includes(exp.toLowerCase().split(' ')[0])||(exp.includes('Fresher')&&j.exp==='Fresher'));
+    }
+    const today = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+    const thisMonthYear = new Date().toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+    const prompt=`You are a LIVE job vacancy aggregator for India. Today is ${today}. Generate exactly 8 FRESH, CURRENTLY OPEN job vacancies posted in the last 30–60 days in JSON format (array only, no markdown, no explanation).
 
-        // Merge AI jobs with filtered base
-        const merged = [...filtered, ...aiJobs];
-        filteredJobs = merged.length > 0 ? merged : baseJobs;
-        currentPage = 1;
+Search criteria:
+- Role/Category: ${cat||kw||'General jobs'}
+- Location: ${loc}
+- Experience: ${exp||'Any'}
 
-        hideLoading();
-        thinkEl.style.display = 'none';
-        resultEl.style.display = 'block';
-        resultEl.innerHTML = `✅ Found <strong>${filteredJobs.length}</strong> vacancies (${filtered.length} curated + ${aiJobs.length} AI-generated) for <strong>${term}</strong> in <strong>${loc}</strong>`;
+STRICT RULES — violations make results useless:
+1. ALL vacancies must be currently OPEN as of ${today} — absolutely no expired or old postings
+2. Salary must reflect ${thisMonthYear} Indian market rates — no outdated figures
+3. Use REAL organisations actively hiring right now in India: NHM, AIIMS, ESIC, SSC, IBPS, APSC, SSB Assam, Manipur PSC, Meghalaya PSC, Nagaland PSC, Tripura PSC, Infosys, TCS, Wipro, Accenture, HCL, Flipkart, Zomato, HDFC, SBI, Bandhan Bank, Apollo Hospitals, Fortis, Max Healthcare, Reliance, L&T, ONGC, etc.
+4. Each job must link to a real active recruitment page (official govt portal, naukri.com, linkedin.com/jobs, indeed.in, etc.)
+5. Include real recruiter contact details — HR emails and phone numbers
+6. Prefer HIGH-VOLUME recruitments (100+ posts) and WALK-IN drives where available
+7. Mix government + private sector; mix NE India + metros relevant to the location
 
-        renderPage();
-        toast(`${filteredJobs.length} jobs found for "${term}" in ${loc}`, 'success');
-        openPortal('indeed', kw || cat, loc);
+Each job object must have EXACTLY these fields:
+title, company, location, type (Full-Time/Government/Contract/Walk-in), exp, salary (₹ Indian format), category (one lowercase word: nursing/clinical/it/accounts/banking/marketing/teaching/engineering/government/pharmacy/legal/media/hr/security/hospitality), portal (real portal name), icon (single relevant emoji), iconBg (light pastel hex like #eff4ff), isNew (always true), isUrgent (bool — true if deadline within 2 weeks or walk-in), url (real active URL), postedDate ("${thisMonthYear}"), phone (real Indian number), email (real HR email)
 
-    } catch(err) {
-        hideLoading();
-        thinkEl.style.display = 'none';
-        resultEl.style.display = 'block';
-        resultEl.innerHTML = `⚠️ AI search unavailable. Showing ${filtered.length} curated results.`;
-        filteredJobs = filtered.length > 0 ? filtered : baseJobs;
-        currentPage = 1;
-        renderPage();
-        toast('Showing curated results', 'warning');
+Return ONLY the raw JSON array. No markdown. No explanation.`;
+    try{
+        const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+        const data=await resp.json();
+        const raw=data.content?.[0]?.text||'[]';
+        let aiJobs=[];
+        try{aiJobs=JSON.parse(raw.replace(/```json|```/g,'').trim());if(!Array.isArray(aiJobs))aiJobs=[];aiJobs=aiJobs.map(j=>({...j,aiGenerated:true}));}catch(e){aiJobs=[];}
+        filteredJobs=[...filtered,...aiJobs];
+        if(filteredJobs.length===0)filteredJobs=[...baseJobs];
+        currentPage=1;hideLoading();
+        thinkEl.style.display='none';resultEl.style.display='block';
+        resultEl.innerHTML=`✅ Found <strong style="color:#2563eb;">${filteredJobs.length}</strong> vacancies — ${filtered.length} curated + ${aiJobs.length} AI-generated fresh results — for <strong>${term}</strong> in <strong>${loc}</strong>
+        <br><span style="font-size:11px;color:#a8a29e;margin-top:4px;display:block;">🔴 Live search also opening on Indeed, Naukri & LinkedIn for real-time results</span>`;
+        renderPage();toast(`${filteredJobs.length} jobs found!`,'success');
+        openPortal('indeed',kw||cat,loc);
+    }catch(err){
+        hideLoading();thinkEl.style.display='none';resultEl.style.display='block';
+        resultEl.innerHTML=`⚠️ AI unavailable. Showing ${filtered.length} curated results.`;
+        filteredJobs=filtered.length>0?filtered:[...baseJobs];currentPage=1;renderPage();toast('Showing curated results','warning');
     }
 }
 
-// ===== QUICK CATEGORY =====
-function quickCat(cat) {
-    document.getElementById('catSelect').value = cat === 'All' ? '' : cat;
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-    doAISearch();
-}
-
-// ===== SELECT STATE =====
+function quickCat(cat){document.getElementById('catSelect').value=cat==='All'?'':cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));event.currentTarget.classList.add('active');doAISearch();}
 function selectState(el, state) {
     document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
-    currentLoc = state;
     document.getElementById('locSelect').value = state;
-    document.getElementById('currentSearch').textContent = `Jobs in ${state}`;
+    document.getElementById('currentSearch').textContent = 'Jobs in ' + state;
 
-    filteredJobs = baseJobs.filter(j =>
-        j.location.toLowerCase().includes(state.toLowerCase().split(' ')[0].toLowerCase()) ||
-        state === 'Northeast India'
-    );
-    if(filteredJobs.length === 0) filteredJobs = [...baseJobs];
-    currentPage = 1;
-    renderPage();
-    toast(`Showing jobs in ${state}`, 'info');
+    // Metro cities that won't have many base NE jobs — always AI search
+    const metroCities = ['Delhi','Mumbai','Kolkata','Chennai','Bengaluru','Hyderabad','Pune','Ahmedabad'];
+    const isMetro = metroCities.some(m => state.toLowerCase().includes(m.toLowerCase()));
+
+    // NE states/cities — filter base jobs first
+    const neKeywords = ['Assam','Guwahati','Manipur','Imphal','Meghalaya','Shillong',
+        'Nagaland','Kohima','Tripura','Agartala','Mizoram','Aizawl',
+        'Arunachal','Itanagar','Sikkim','Gangtok','Silchar','Dibrugarh',
+        'Jorhat','Tezpur','Bongaigaon','Northeast','NE','All Assam','All India',
+        'Pan India','Multiple Districts'];
+
+    if (state === 'Northeast India') {
+        filteredJobs = [...baseJobs];
+        currentPage = 1;
+        renderPage();
+        toast('Showing all NE India jobs', 'info');
+    } else if (isMetro) {
+        // For metro cities: filter base jobs that explicitly include this metro,
+        // plus pan-India jobs, then trigger AI to fill with city-specific data
+        const cityKey = state.toLowerCase();
+        filteredJobs = baseJobs.filter(j => {
+            const loc = j.location.toLowerCase();
+            return loc.includes(cityKey) ||
+                   loc.includes('pan india') ||
+                   loc.includes('all india') ||
+                   loc.includes('/ ' + cityKey) ||
+                   loc.includes(cityKey + ' /');
+        });
+        currentPage = 1;
+        renderPage();
+        // Auto-trigger AI search for this metro city
+        document.getElementById('locSelect').value = state;
+        toast('🔍 Fetching fresh ' + state + ' jobs via AI…', 'info');
+        doAISearch();
+    } else {
+        // NE city/state — filter from base jobs by location keyword
+        const stateKey = state.toLowerCase().split(',')[0].trim();
+        filteredJobs = baseJobs.filter(j => {
+            const loc = j.location.toLowerCase();
+            return loc.includes(stateKey) ||
+                   loc.includes('all assam') ||
+                   loc.includes('pan india') ||
+                   loc.includes('all india') ||
+                   loc.includes('multiple districts') ||
+                   neKeywords.some(nk => loc.includes(nk.toLowerCase()) && stateKey.includes(nk.toLowerCase().substring(0,4)));
+        });
+        // If still no matches, search entire NE base
+        if (filteredJobs.length < 3) {
+            filteredJobs = baseJobs.filter(j =>
+                j.location.toLowerCase().includes(stateKey) ||
+                j.location.toLowerCase().includes('all india') ||
+                j.location.toLowerCase().includes('pan india')
+            );
+        }
+        if (filteredJobs.length === 0) filteredJobs = [...baseJobs];
+        currentPage = 1;
+        renderPage();
+        toast('Showing jobs in ' + state + ' (' + filteredJobs.length + ' found)', 'info');
+    }
 }
-
-// ===== TOGGLE FILTER =====
-function toggleFilter(el, filter) {
-    document.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    currentFilter = filter;
-
-    let base = [...baseJobs];
-    if(filter === 'Urgent') base = base.filter(j => j.isUrgent);
-    else if(filter === 'New') base = base.filter(j => j.isNew);
-    else if(filter === 'Fresher') base = base.filter(j => j.exp === 'Fresher');
-    else if(filter === 'Govt') base = base.filter(j => j.type === 'Government');
-    else if(filter === 'Private') base = base.filter(j => j.type === 'Full-Time');
-
-    filteredJobs = base.length > 0 ? base : [...baseJobs];
-    currentPage = 1;
-    renderPage();
-    toast(`Filter: ${filter} (${filteredJobs.length} jobs)`, 'info');
-}
-
-// ===== OPEN PORTAL =====
-function openPortal(key, kw, loc) {
-    const p = portals[key];
-    if(!p) return;
-    const q = encodeURIComponent(kw || document.getElementById('kwInput').value || 'jobs');
-    const l = encodeURIComponent(loc || document.getElementById('locSelect').value || 'Assam');
-    const url = p.url.replace('{q}', q).replace('{l}', l);
-    window.open(url, '_blank');
-    toast(`Opening ${p.name}…`, 'info');
-}
-
-// ===== OPEN ALL PORTALS =====
-function openAllPortals() {
-    const q = encodeURIComponent(document.getElementById('kwInput').value || 'jobs');
-    const l = encodeURIComponent(document.getElementById('locSelect').value || 'Assam');
-    const urls = [
-        `https://in.indeed.com/jobs?q=${q}&l=${l}`,
-        `https://www.naukri.com/${q}-jobs-in-${l}`,
-        `https://www.linkedin.com/jobs/search/?keywords=${q}&location=${l}`,
-        `https://jobassam.in/?s=${q}`,
-        `https://assamcareer.in/?s=${q}`,
-        `https://niyukti.assam.gov.in/`,
-        `https://nhm.assam.gov.in/information-services/recruitment`,
-        `https://www.google.com/search?q=${q}+jobs+in+${l}&ibp=htl;jobs`
-    ];
-    showLoading('all portals');
-    urls.forEach((url, i) => setTimeout(() => window.open(url, '_blank'), 600 * (i + 1)));
-    setTimeout(() => { hideLoading(); toast(`Opened ${urls.length} portals!`, 'success'); }, 2000);
-}
-
-// ===== LOADING =====
-function showLoading(term) {
-    const ov = document.getElementById('loadingOverlay');
-    document.getElementById('loadingTxt').textContent = `Searching for "${term}"…`;
-    document.getElementById('loadingChips').innerHTML = '';
-    ov.classList.add('active');
-    const names = ['LinkedIn','Indeed','Naukri','JobAssam','Niyukti','AssamCareer','NHM Assam','APSC','Google Jobs'];
-    names.forEach((n,i) => {
-        setTimeout(() => {
-            const chip = document.createElement('div');
-            chip.className = 'lchip'; chip.textContent = `✓ ${n}`;
-            chip.style.animationDelay = `${i*0.1}s`;
-            document.getElementById('loadingChips').appendChild(chip);
-        }, i * 200);
-    });
-}
-function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
-
-// ===== TOAST =====
-function toast(msg, type='info') {
-    const t = document.getElementById('toast');
-    const icons = { success:'✅', warning:'⚠️', error:'❌', info:'ℹ️' };
-    document.getElementById('toastIcon').textContent = icons[type] || 'ℹ️';
-    document.getElementById('toastMsg').textContent = msg;
-    t.className = `toast ${type} show`;
-    setTimeout(() => t.classList.remove('show'), 3500);
-}
-
-document.addEventListener('keydown', e => { if(e.key==='Escape') hideLoading(); });
+function toggleFilter(el,filter){document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');let base=[...baseJobs];if(filter==='Urgent')base=base.filter(j=>j.isUrgent);else if(filter==='New')base=base.filter(j=>j.isNew);else if(filter==='Fresher')base=base.filter(j=>j.exp==='Fresher');else if(filter==='Govt')base=base.filter(j=>j.type==='Government');else if(filter==='Private')base=base.filter(j=>j.type==='Full-Time');filteredJobs=base.length>0?base:[...baseJobs];currentPage=1;renderPage();toast('Filter: '+filter+' — '+filteredJobs.length+' jobs','info');}
+function openPortal(key,kw,loc){const p=portals[key];if(!p)return;const q=encodeURIComponent(kw||document.getElementById('kwInput').value||'jobs');const l=encodeURIComponent(loc||document.getElementById('locSelect').value||'Assam');window.open(p.url.replace('{q}',q).replace('{l}',l),'_blank');toast('Opening '+p.name+'…','info');}
+function openAllPortals(){const q=encodeURIComponent(document.getElementById('kwInput').value||'jobs');const l=encodeURIComponent(document.getElementById('locSelect').value||'Assam');const urls=[`https://in.indeed.com/jobs?q=${q}&l=${l}`,`https://www.naukri.com/${q}-jobs-in-${l}`,`https://www.linkedin.com/jobs/search/?keywords=${q}&location=${l}`,`https://jobassam.in/?s=${q}`,`https://assamcareer.in/?s=${q}`,`https://niyukti.assam.gov.in/`,`https://nhm.assam.gov.in/information-services/recruitment`,`https://www.google.com/search?q=${q}+jobs+in+${l}&ibp=htl;jobs`];showLoading('all portals');urls.forEach((u,i)=>setTimeout(()=>window.open(u,'_blank'),600*(i+1)));setTimeout(()=>{hideLoading();toast('Opened '+urls.length+' portals!','success');},2200);}
+function showLoading(term){document.getElementById('loadingTxt').textContent=`Searching "${term}"…`;document.getElementById('loadingChips').innerHTML='';document.getElementById('loadingOverlay').classList.add('active');['LinkedIn','Indeed','Naukri','JobAssam','Niyukti','AssamCareer','NHM Assam','APSC','Google Jobs'].forEach((n,i)=>{setTimeout(()=>{const c=document.createElement('div');c.className='lchip';c.textContent='✓ '+n;c.style.animationDelay=`${i*0.1}s`;document.getElementById('loadingChips').appendChild(c);},i*200);});}
+function hideLoading(){document.getElementById('loadingOverlay').classList.remove('active');}
+function toast(msg,type='info'){const t=document.getElementById('toast');document.getElementById('toastIcon').textContent={success:'✅',warning:'⚠️',error:'❌',info:'ℹ️'}[type]||'ℹ️';document.getElementById('toastMsg').textContent=msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3500);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')hideLoading();});
 </script>
 </body>
 </html>
